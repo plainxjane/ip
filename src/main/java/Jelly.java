@@ -18,9 +18,8 @@ public class Jelly {
         System.out.println("What can I do for you? :)");
 
         Scanner scanner = new Scanner(System.in);
-        String[] tasks = new String[100];
+        Task[] tasks = new Task[100];
         int taskCount = 0;
-        boolean[] taskDone = new boolean[100];
 
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
@@ -33,8 +32,8 @@ public class Jelly {
                 System.out.println("Your Jelly Tasks :)");
                 System.out.println("----------------------------------------------------------");
                 for (int i = 0; i < taskCount; i++) {
-                    String taskStatus = taskDone[i] ? "X" : " ";
-                    System.out.println((i + 1) + ".[" + taskStatus + "] " + tasks[i]);
+                    String taskStatus = tasks[i].getStatusIcon();
+                    System.out.println((i + 1) + ".[" + taskStatus + "] " + tasks[i].getDescription());
                 }
                 System.out.println("----------------------------------------------------------");
 
@@ -43,24 +42,23 @@ public class Jelly {
                 int taskIndex = taskNumber - 1;
 
                 // mark task as done
-                taskDone[taskIndex] = true;
+                tasks[taskIndex].markAsDone();
 
                 System.out.println("Nice! Jelly has marked this task as done~");
-                System.out.println("   [X] " + tasks[taskIndex]);
+                System.out.println("   [X] " + tasks[taskIndex].getDescription());
 
             } else if (command.startsWith("unmark ")) {
                 int taskNumber = Integer.parseInt(command.substring(7));
                 int taskIndex = taskNumber - 1;
 
                 // mark task as undone
-                taskDone[taskIndex] = false;
+                tasks[taskIndex].markAsNotDone();
 
                 System.out.println("Ok, Jelly has marked this task as not done yet~");
-                System.out.println("   [] " + tasks[taskIndex]);
+                System.out.println("   [] " + tasks[taskIndex].getDescription());
 
             } else {
-                tasks[taskCount] = command;
-                taskDone[taskCount] = false;
+                tasks[taskCount] = new Task(command);
                 taskCount++;
                 System.out.println("Added to Jelly: " + command);
             }
