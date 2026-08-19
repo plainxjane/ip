@@ -20,6 +20,7 @@ public class Jelly {
         Scanner scanner = new Scanner(System.in);
         String[] tasks = new String[100];
         int taskCount = 0;
+        boolean[] taskDone = new boolean[100];
 
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
@@ -27,15 +28,29 @@ public class Jelly {
             if (command.equals("bye")) {
                 System.out.println("Bye! Stay jiggly~");
                 break;
+
             } else if (command.equals("list")) {
                 System.out.println("Your Jelly Tasks :)");
                 System.out.println("----------------------------------------------------------");
                 for (int i = 0; i < taskCount; i++) {
-                    System.out.println((i + 1) + ". " + tasks[i]);
+                    String taskStatus = taskDone[i] ? "X" : " ";
+                    System.out.println((i + 1) + ".[" + taskStatus + "] " + tasks[i]);
                 }
                 System.out.println("----------------------------------------------------------");
+
+            } else if (command.startsWith("mark ")) {
+                int taskNumber = Integer.parseInt(command.substring(5));
+                int taskIndex = taskNumber - 1;
+
+                // mark task as done
+                taskDone[taskIndex] = true;
+
+                System.out.println("Nice! Jelly has marked this task as done~");
+                System.out.println("   [X] " + tasks[taskIndex]);
+
             } else {
                 tasks[taskCount] = command;
+                taskDone[taskCount] = false;
                 taskCount++;
                 System.out.println("Added to Jelly: " + command);
             }
