@@ -29,14 +29,15 @@ public class Jelly {
 
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
+            CommandType commandType = getCommandType(command);
 
             try {
 
-                if (command.equals("bye")) {
+                if (commandType == CommandType.BYE) {
                     System.out.println("Bye! Stay jiggly~");
                     break;
 
-                } else if (command.equals("list")) {
+                } else if (commandType == CommandType.LIST) {
                     System.out.println("Your Jelly Tasks :)");
                     System.out.println("----------------------------------------------------------");
                     for (int i = 0; i < tasks.size(); i++) {
@@ -44,10 +45,11 @@ public class Jelly {
                     }
                     System.out.println("----------------------------------------------------------");
 
-                } else if (command.equals("mark") || command.equals("unmark")) {
+                } else if ((commandType == CommandType.MARK || commandType == CommandType.UNMARK)
+                        && (command.equals("mark") || command.equals("unmark"))) {
                     throw new JellyException("Please enter a valid task number.");
 
-                } else if (command.startsWith("mark ")) {
+                } else if (commandType == CommandType.MARK) {
                     int taskNumber;
 
                     try {
@@ -66,7 +68,7 @@ public class Jelly {
                     System.out.println("Nice! Jelly has marked this task as done~");
                     System.out.println("   [X] " + tasks.get(taskNumber - 1).getDescription());
 
-                } else if (command.startsWith("unmark ")) {
+                } else if (commandType == CommandType.UNMARK) {
                     int taskNumber;
 
                     try {
@@ -85,7 +87,7 @@ public class Jelly {
                     System.out.println("Ok, Jelly has marked this task as not done yet~");
                     System.out.println("   [ ] " + tasks.get(taskNumber - 1).getDescription());
 
-                } else if (command.equals("todo") || command.startsWith("todo ")) {
+                } else if (commandType == CommandType.TODO) {
                     String description = command.substring(4).trim();
 
                     if (description.isEmpty()) {
@@ -100,7 +102,7 @@ public class Jelly {
                     System.out.println("   " + todo);
                     System.out.println("\nNow you have " + tasks.size() + " tasks in your Jelly list~");
 
-                } else if (command.startsWith("deadline")) {
+                } else if (commandType == CommandType.DEADLINE) {
                     if (!command.startsWith("deadline ")) {
                         throw new JellyException("A Jelly deadline needs a description and a /by date.");
                     }
@@ -125,7 +127,7 @@ public class Jelly {
                     System.out.println("   " + deadline);
                     System.out.println("\nNow you have " + tasks.size() + " tasks in your Jelly list~");
 
-                } else if (command.startsWith("event")) {
+                } else if (commandType == CommandType.EVENT) {
                     if (!command.startsWith("event ")) {
                         throw new JellyException("A Jelly event needs a description, start time, and end time.");
                     }
@@ -158,11 +160,11 @@ public class Jelly {
                     System.out.println("   " + event);
                     System.out.println("\nNow you have " + tasks.size() + " tasks in your Jelly list~");
 
-                } else if (command.equals("delete")) {
+                } else if (commandType == CommandType.DELETE && command.equals("delete")) {
 
                     throw new JellyException("Please enter a task number to delete.");
 
-                } else if (command.startsWith("delete ")) {
+                } else if (commandType == CommandType.DELETE) {
                     int taskNumber;
 
                     try {
@@ -189,6 +191,33 @@ public class Jelly {
             }
         }
 
+    }
+
+    /**
+     * Identifies the command represented by an input line.
+     *
+     * @param command the raw command entered by the user
+     * @return the matching command type, or {@link CommandType#INVALID}
+     */
+    private static CommandType getCommandType(String command) {
+        if (command.equals("bye")) {
+            return CommandType.BYE;
+        } else if (command.equals("list")) {
+            return CommandType.LIST;
+        } else if (command.equals("todo") || command.startsWith("todo ")) {
+            return CommandType.TODO;
+        } else if (command.equals("deadline") || command.startsWith("deadline ")) {
+            return CommandType.DEADLINE;
+        } else if (command.equals("event") || command.startsWith("event ")) {
+            return CommandType.EVENT;
+        } else if (command.equals("mark") || command.startsWith("mark ")) {
+            return CommandType.MARK;
+        } else if (command.equals("unmark") || command.startsWith("unmark ")) {
+            return CommandType.UNMARK;
+        } else if (command.equals("delete") || command.startsWith("delete ")) {
+            return CommandType.DELETE;
+        }
+        return CommandType.INVALID;
     }
 
     /**
