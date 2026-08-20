@@ -1,6 +1,13 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
+/** Runs Jelly's command-line task manager. */
 public class Jelly {
+    /**
+     * Starts Jelly, reads commands from standard input, and updates the task list.
+     *
+     * @param args command-line arguments, which are not used
+     */
     public static void main(String[] args) {
         String banner = "╭──────────────────────╮\n"
                 + "│      J E L L Y       │\n"
@@ -18,8 +25,7 @@ public class Jelly {
         System.out.println("What can I do for you? :)");
 
         Scanner scanner = new Scanner(System.in);
-        Task[] tasks = new Task[100];
-        int taskCount = 0;
+        ArrayList<Task> tasks = new ArrayList<>();
 
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
@@ -33,8 +39,8 @@ public class Jelly {
                 } else if (command.equals("list")) {
                     System.out.println("Your Jelly Tasks :)");
                     System.out.println("----------------------------------------------------------");
-                    for (int i = 0; i < taskCount; i++) {
-                        System.out.println((i + 1) + "." + tasks[i]);
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println((i + 1) + "." + tasks.get(i));
                     }
                     System.out.println("----------------------------------------------------------");
 
@@ -50,15 +56,15 @@ public class Jelly {
                         throw new JellyException("Please enter a valid task number.");
                     }
 
-                    if (taskNumber < 1 || taskNumber > taskCount) {
+                    if (taskNumber < 1 || taskNumber > tasks.size()) {
                         throw new JellyException("Please enter a valid task number.");
                     }
 
                     // mark task as done
-                    tasks[taskNumber - 1].markAsDone();
+                    tasks.get(taskNumber - 1).markAsDone();
 
                     System.out.println("Nice! Jelly has marked this task as done~");
-                    System.out.println("   [X] " + tasks[taskNumber - 1].getDescription());
+                    System.out.println("   [X] " + tasks.get(taskNumber - 1).getDescription());
 
                 } else if (command.startsWith("unmark ")) {
                     int taskNumber;
@@ -69,15 +75,15 @@ public class Jelly {
                         throw new JellyException("Please enter a valid task number.");
                     }
 
-                    if (taskNumber < 1 || taskNumber > taskCount) {
+                    if (taskNumber < 1 || taskNumber > tasks.size()) {
                         throw new JellyException("Please enter a valid task number.");
                     }
 
                     // mark task as undone
-                    tasks[taskNumber - 1].markAsNotDone();
+                    tasks.get(taskNumber - 1).markAsNotDone();
 
                     System.out.println("Ok, Jelly has marked this task as not done yet~");
-                    System.out.println("   [ ] " + tasks[taskNumber - 1].getDescription());
+                    System.out.println("   [ ] " + tasks.get(taskNumber - 1).getDescription());
 
                 } else if (command.equals("todo") || command.startsWith("todo ")) {
                     String description = command.substring(4).trim();
@@ -86,16 +92,13 @@ public class Jelly {
                         throw new JellyException("A Jelly to-do description cannot be empty!");
                     }
 
-                    if (taskCount >= tasks.length) {
-                        throw new JellyException("Jelly's task list is full :(");
-                    }
 
-                    tasks[taskCount] = new Todo(description);
-                    taskCount++;
+                    Todo todo = new Todo(description);
+                    tasks.add(todo);
 
                     System.out.println("Got it! Jelly has added this task as a to-do:");
-                    System.out.println("   " + tasks[taskCount - 1]);
-                    System.out.println("\nNow you have " + taskCount + " tasks in your Jelly list~");
+                    System.out.println("   " + todo);
+                    System.out.println("\nNow you have " + tasks.size() + " tasks in your Jelly list~");
 
                 } else if (command.startsWith("deadline")) {
                     if (!command.startsWith("deadline ")) {
@@ -115,16 +118,12 @@ public class Jelly {
                     String description = parts[0].trim();
                     String by = parts[1].trim();
 
-                    if (taskCount >= tasks.length) {
-                        throw new JellyException("Jelly's task list is full :(");
-                    }
-
-                    tasks[taskCount] = new Deadline(description, by);
-                    taskCount++;
+                    Deadline deadline = new Deadline(description, by);
+                    tasks.add(deadline);
 
                     System.out.println("Got it! Jelly has added this task as a deadline:");
-                    System.out.println("   " + tasks[taskCount - 1]);
-                    System.out.println("\nNow you have " + taskCount + " tasks in your Jelly list~");
+                    System.out.println("   " + deadline);
+                    System.out.println("\nNow you have " + tasks.size() + " tasks in your Jelly list~");
 
                 } else if (command.startsWith("event")) {
                     if (!command.startsWith("event ")) {
@@ -152,16 +151,35 @@ public class Jelly {
                     String from = times[0].trim();
                     String to = times[1].trim();
 
-                    if (taskCount >= tasks.length) {
-                        throw new JellyException("Jelly's task list is full :(");
-                    }
-
-                    tasks[taskCount] = new Event(description, from, to);
-                    taskCount++;
+                    Event event = new Event(description, from, to);
+                    tasks.add(event);
 
                     System.out.println("Got it! Jelly has added this task as an event:");
-                    System.out.println("   " + tasks[taskCount - 1]);
-                    System.out.println("\nNow you have " + taskCount + " tasks in your Jelly list~");
+                    System.out.println("   " + event);
+                    System.out.println("\nNow you have " + tasks.size() + " tasks in your Jelly list~");
+
+                } else if (command.equals("delete")) {
+
+                    throw new JellyException("Please enter a task number to delete.");
+
+                } else if (command.startsWith("delete ")) {
+                    int taskNumber;
+
+                    try {
+                        taskNumber = Integer.parseInt(command.substring(7).trim());
+                    } catch (NumberFormatException e) {
+                        throw new JellyException("Please enter a valid task number.");
+                    }
+
+                    if (taskNumber < 1 || taskNumber > tasks.size()) {
+                        throw new JellyException("Please enter a valid task number.");
+                    }
+
+                    Task deletedTask = tasks.remove(taskNumber - 1);
+
+                    System.out.println("Congrats! Jelly has removed this task for you :)");
+                    System.out.println(deletedTask);
+                    System.out.println("Now you have " + tasks.size() + " tasks in your Jelly list~");
 
                 } else {
                     throw new JellyException("Yikes! Jelly doesn't recognize that command. Try again~");
@@ -173,7 +191,11 @@ public class Jelly {
 
     }
 
-    // helper method to print error message
+    /**
+     * Prints an error message between Jelly's standard divider lines.
+     *
+     * @param message the error message to display
+     */
     private static void showError(String message) {
         System.out.println("____________________________________________________________");
         System.out.println(" " + message);
