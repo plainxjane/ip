@@ -32,7 +32,6 @@ public class Jelly {
                 System.out.println("Your Jelly Tasks :)");
                 System.out.println("----------------------------------------------------------");
                 for (int i = 0; i < taskCount; i++) {
-                    String taskStatus = tasks[i].getStatusIcon();
                     System.out.println((i + 1) + "." + tasks[i]);
                 }
                 System.out.println("----------------------------------------------------------");
@@ -60,12 +59,12 @@ public class Jelly {
             } else if (command.startsWith("todo")) {
                 String description = command.substring(5);
 
-                tasks[taskCount] = new Task(description);
+                tasks[taskCount] = new Todo(description);
                 taskCount++;
 
                 System.out.println("Got it! Jelly has added this task as a to-do:");
                 System.out.println("   " + tasks[taskCount - 1]);
-                System.out.println("Now you have " + taskCount + " tasks in your Jelly list~");
+                System.out.println("\nNow you have " + taskCount + " tasks in your Jelly list~");
 
             } else if (command.startsWith("deadline")) {
                 String input = command.substring(9);
@@ -74,12 +73,12 @@ public class Jelly {
                 String description = parts[0];
                 String by = parts[1];
 
-                tasks[taskCount] = new Task(description, by);
+                tasks[taskCount] = new Deadline(description, by);
                 taskCount++;
 
                 System.out.println("Got it! Jelly has added this task as a deadline:");
                 System.out.println("   " + tasks[taskCount - 1]);
-                System.out.println("Now you have " + taskCount + " tasks in your Jelly list~");
+                System.out.println("\nNow you have " + taskCount + " tasks in your Jelly list~");
 
             } else if (command.startsWith("event")) {
                 String input = command.substring(6);
@@ -90,12 +89,12 @@ public class Jelly {
                 String from = times[0];
                 String to = times[1];
 
-                tasks[taskCount] = new Task(description, from, to);
+                tasks[taskCount] = new Event(description, from, to);
                 taskCount++;
 
                 System.out.println("Got it! Jelly has added this task as an event:");
                 System.out.println("   " + tasks[taskCount - 1]);
-                System.out.println("Now you have " + taskCount + " tasks in your Jelly list~");
+                System.out.println("\nNow you have " + taskCount + " tasks in your Jelly list~");
 
             } else {
                 tasks[taskCount] = new Task(command);
