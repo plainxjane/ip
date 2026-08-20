@@ -43,3 +43,8 @@ bash .codex/skills/test-ui/scripts/run_ui_tests.sh
 ```
 
 The skill must stop at the first failed case and show the complete input, actual output, and expected output.
+
+When reviewing command parsers, test malformed inputs interleaved with valid
+commands. Confirm that rejected commands do not change task counts or task
+states, and prefer exact command matching (for example, accept `todo` and
+`todo <description>` but reject unrelated strings beginning with `todo`).
