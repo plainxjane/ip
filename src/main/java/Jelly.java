@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.IOException;
 
 /** Runs Jelly's command-line task manager. */
 public class Jelly {
@@ -25,7 +26,16 @@ public class Jelly {
         System.out.println("What can I do for you? :)");
 
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<Task> tasks;
+        Storage storage = new Storage();
+
+        try {
+            tasks = storage.load();
+        } catch (IOException e) {
+            System.out.println("Jelly could not load your saved tasks.");
+            System.out.println("Jelly will start with an empty task list~");
+            tasks = new ArrayList<>();
+        }
 
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
@@ -64,6 +74,11 @@ public class Jelly {
 
                     // mark task as done
                     tasks.get(taskNumber - 1).markAsDone();
+                    try {
+                        storage.save(tasks);
+                    } catch (IOException e) {
+                        System.out.println("Jelly could not save your tasks.");
+                    }
 
                     System.out.println("Nice! Jelly has marked this task as done~");
                     System.out.println("   [X] " + tasks.get(taskNumber - 1).getDescription());
@@ -83,6 +98,11 @@ public class Jelly {
 
                     // mark task as undone
                     tasks.get(taskNumber - 1).markAsNotDone();
+                    try {
+                        storage.save(tasks);
+                    } catch (IOException e) {
+                        System.out.println("Jelly could not save your tasks.");
+                    }
 
                     System.out.println("Ok, Jelly has marked this task as not done yet~");
                     System.out.println("   [ ] " + tasks.get(taskNumber - 1).getDescription());
@@ -97,6 +117,11 @@ public class Jelly {
 
                     Todo todo = new Todo(description);
                     tasks.add(todo);
+                    try {
+                        storage.save(tasks);
+                    } catch (IOException e) {
+                        System.out.println("Jelly could not save your tasks.");
+                    }
 
                     System.out.println("Got it! Jelly has added this task as a to-do:");
                     System.out.println("   " + todo);
@@ -122,6 +147,11 @@ public class Jelly {
 
                     Deadline deadline = new Deadline(description, by);
                     tasks.add(deadline);
+                    try {
+                        storage.save(tasks);
+                    } catch (IOException e) {
+                        System.out.println("Jelly could not save your tasks.");
+                    }
 
                     System.out.println("Got it! Jelly has added this task as a deadline:");
                     System.out.println("   " + deadline);
@@ -155,6 +185,11 @@ public class Jelly {
 
                     Event event = new Event(description, from, to);
                     tasks.add(event);
+                    try {
+                        storage.save(tasks);
+                    } catch (IOException e) {
+                        System.out.println("Jelly could not save your tasks.");
+                    }
 
                     System.out.println("Got it! Jelly has added this task as an event:");
                     System.out.println("   " + event);
@@ -178,6 +213,11 @@ public class Jelly {
                     }
 
                     Task deletedTask = tasks.remove(taskNumber - 1);
+                    try {
+                        storage.save(tasks);
+                    } catch (IOException e) {
+                        System.out.println("Jelly could not save your tasks.");
+                    }
 
                     System.out.println("Congrats! Jelly has removed this task for you :)");
                     System.out.println(deletedTask);
