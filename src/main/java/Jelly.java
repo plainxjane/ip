@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -144,8 +146,15 @@ public class Jelly {
 
                     String description = parts[0].trim();
                     String by = parts[1].trim();
+                    LocalDateTime dateTime;
+                    try {
+                        dateTime = DateTimeParser.parse(by);
+                    } catch (DateTimeParseException e) {
+                        throw new JellyException(
+                                "Use a deadline date in the format yyyy-MM-dd HHmm, e.g. 2019-12-02 1800.");
+                    }
 
-                    Deadline deadline = new Deadline(description, by);
+                    Deadline deadline = new Deadline(description, dateTime);
                     tasks.add(deadline);
                     try {
                         storage.save(tasks);
@@ -183,7 +192,22 @@ public class Jelly {
                     String from = times[0].trim();
                     String to = times[1].trim();
 
-                    Event event = new Event(description, from, to);
+                    LocalDateTime dateTimeFrom;
+                    LocalDateTime dateTimeTo;
+
+                    try {
+                        dateTimeFrom = DateTimeParser.parse(from);
+                        dateTimeTo = DateTimeParser.parse(to);
+                    } catch (DateTimeParseException e) {
+                        throw new JellyException(
+                                "Use event dates in the format yyyy-MM-dd HHmm, e.g. 2019-12-02 1800.");
+                    }
+
+                    if (dateTimeTo.isBefore(dateTimeFrom)) {
+                        throw new JellyException("An event's end time cannot be before its start time.");
+                    }
+
+                    Event event = new Event(description, dateTimeFrom, dateTimeTo);
                     tasks.add(event);
                     try {
                         storage.save(tasks);
