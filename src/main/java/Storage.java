@@ -48,7 +48,7 @@ public class Storage {
             } else if (type.equals("D") && parts.length >= 4) {
                 task = new Deadline(description, DateTimeParser.parse(parts[3]));
             } else if (type.equals("E") && parts.length >= 5) {
-                task = new Event(description, parts[3], parts[4]);
+                task = new Event(description, DateTimeParser.parse(parts[3]), DateTimeParser.parse(parts[4]));
             } else {
                 continue;
             }
