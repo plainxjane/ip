@@ -14,53 +14,54 @@ public class Storage {
         this.filePath = Path.of("data", "jelly.txt");
     }
 
-//    /**
-//     * Loads tasks from the data file.
-//     *
-//     * @return the saved tasks, or an empty list if the file does not exist
-//     * @throws IOException if the file cannot be read
-//     */
-//    public ArrayList<Task> load() throws IOException {
-//        ArrayList<Task> tasks = new ArrayList<>();
-//
-//        if (!Files.exists(filePath)) {
-//            return tasks;
-//        }
-//
-//        List<String> lines = Files.readAllLines(filePath);
-//
-//        for (String line : lines) {
-//            String[] parts = line.split(" \\| ");
-//
-//            if (parts.length < 3) {
-//                continue;
-//            }
-//
-//            String type = parts[0];
-//            boolean isDone = parts[1].equals("1");
-//            String description = parts[2];
-//
-//            Task task;
-//
-//            if (type.equals("T")) {
-//                task = new Todo(description);
-//            } else if (type.equals("D") && parts.length >= 4) {
-//                task = new Deadline(description, parts[3]);
-//            } else if (type.equals("E") && parts.length >= 5) {
-//                task = new Event(description, parts[3], parts[4]);
-//            } else {
-//                continue;
-//            }
-//
-//            if (isDone) {
-//                task.markAsDone();
-//            }
-//
-//            tasks.add(task);
-//        }
-//
-//        return tasks;
-//    }
+    /**
+     * Loads tasks from the data file.
+     *
+     * @return the saved tasks, or an empty list if the file does not exist
+     * @throws IOException if the file cannot be read
+     */
+    public ArrayList<Task> load() throws IOException {
+        ArrayList<Task> tasks = new ArrayList<>();
+
+        /** if data file does not exist, handle it as an empty list */
+        if (!Files.exists(filePath)) {
+            return tasks;
+        }
+
+        List<String> lines = Files.readAllLines(filePath);
+
+        for (String line : lines) {
+            String[] parts = line.split(" \\| ");
+
+            if (parts.length < 3) {
+                continue;
+            }
+
+            String type = parts[0];
+            boolean isDone = parts[1].equals("1");
+            String description = parts[2];
+
+            Task task;
+
+            if (type.equals("T")) {
+                task = new Todo(description);
+            } else if (type.equals("D") && parts.length >= 4) {
+                task = new Deadline(description, parts[3]);
+            } else if (type.equals("E") && parts.length >= 5) {
+                task = new Event(description, parts[3], parts[4]);
+            } else {
+                continue;
+            }
+
+            if (isDone) {
+                task.markAsDone();
+            }
+
+            tasks.add(task);
+        }
+
+        return tasks;
+    }
 
     /**
      * Saves all tasks to the data file.

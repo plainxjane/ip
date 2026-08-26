@@ -26,8 +26,16 @@ public class Jelly {
         System.out.println("What can I do for you? :)");
 
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<Task> tasks;
         Storage storage = new Storage();
+
+        try {
+            tasks = storage.load();
+        } catch (IOException e) {
+            System.out.println("Jelly could not load your saved tasks.");
+            System.out.println("Jelly will start with an empty task list~");
+            tasks = new ArrayList<>();
+        }
 
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
