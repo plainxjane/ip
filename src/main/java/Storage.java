@@ -46,7 +46,7 @@ public class Storage {
             if (type.equals("T")) {
                 task = new Todo(description);
             } else if (type.equals("D") && parts.length >= 4) {
-                task = new Deadline(description, parts[3]);
+                task = new Deadline(description, DateTimeParser.parse(parts[3]));
             } else if (type.equals("E") && parts.length >= 5) {
                 task = new Event(description, parts[3], parts[4]);
             } else {

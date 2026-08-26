@@ -13,7 +13,7 @@ marks and unmarks tasks, deletes a task, and saves the final task list.
 ### Input
 ```text
 todo buy milk
-deadline submit report /by Friday
+deadline submit report /by 2019-12-02 1800
 event team meeting /from 10am /to 11am
 blah
 mark 1
@@ -43,7 +43,7 @@ Got it! Jelly has added this task as a to-do:
 
 Now you have 1 tasks in your Jelly list~
 Got it! Jelly has added this task as a deadline:
-   [D][ ] submit report (by: Friday)
+   [D][ ] submit report (by: Dec 02 2019 18:00)
 
 Now you have 2 tasks in your Jelly list~
 Got it! Jelly has added this task as an event:
@@ -58,7 +58,7 @@ Nice! Jelly has marked this task as done~
 Ok, Jelly has marked this task as not done yet~
    [ ] buy milk
 Congrats! Jelly has removed this task for you :)
-[D][ ] submit report (by: Friday)
+[D][ ] submit report (by: Dec 02 2019 18:00)
 Now you have 2 tasks in your Jelly list~
 Your Jelly Tasks :)
 ----------------------------------------------------------
