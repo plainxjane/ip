@@ -14,7 +14,7 @@ marks and unmarks tasks, deletes a task, and saves the final task list.
 ```text
 todo buy milk
 deadline submit report /by 2019-12-02 1800
-event team meeting /from 10am /to 11am
+event team meeting /from 2019-12-02 1000 /to 2019-12-02 1100
 blah
 mark 1
 unmark 1
@@ -47,7 +47,7 @@ Got it! Jelly has added this task as a deadline:
 
 Now you have 2 tasks in your Jelly list~
 Got it! Jelly has added this task as an event:
-   [E][ ] team meeting (from: 10am to: 11am)
+   [E][ ] team meeting (from: Dec 02 2019 10:00 to: Dec 02 2019 11:00)
 
 Now you have 3 tasks in your Jelly list~
 ____________________________________________________________
@@ -63,7 +63,7 @@ Now you have 2 tasks in your Jelly list~
 Your Jelly Tasks :)
 ----------------------------------------------------------
 1.[T][ ] buy milk
-2.[E][ ] team meeting (from: 10am to: 11am)
+2.[E][ ] team meeting (from: Dec 02 2019 10:00 to: Dec 02 2019 11:00)
 ----------------------------------------------------------
 Bye! Stay jiggly~
 ```
@@ -98,7 +98,7 @@ What can I do for you? :)
 Your Jelly Tasks :)
 ----------------------------------------------------------
 1.[T][ ] buy milk
-2.[E][ ] team meeting (from: 10am to: 11am)
+2.[E][ ] team meeting (from: Dec 02 2019 10:00 to: Dec 02 2019 11:00)
 ----------------------------------------------------------
 Bye! Stay jiggly~
 ```

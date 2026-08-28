@@ -20,8 +20,8 @@ public class Storage {
      * @return the saved tasks, or an empty list if the file does not exist
      * @throws IOException if the file cannot be read
      */
-    public ArrayList<Task> load() throws IOException {
-        ArrayList<Task> tasks = new ArrayList<>();
+    public TaskList load() throws IOException {
+        TaskList tasks = new TaskList();
 
         /** if data file does not exist, handle it as an empty list */
         if (!Files.exists(filePath)) {
@@ -57,7 +57,7 @@ public class Storage {
                 task.markAsDone();
             }
 
-            tasks.add(task);
+            tasks.addTask(task);
         }
 
         return tasks;
@@ -69,12 +69,12 @@ public class Storage {
      * @param tasks tasks to save
      * @throws IOException if the directory or file cannot be written
      */
-    public void save(List<Task> tasks) throws IOException {
+    public void save(TaskList taskList) throws IOException {
         Files.createDirectories(filePath.getParent());
 
         ArrayList<String> lines = new ArrayList<>();
 
-        for (Task task : tasks) {
+        for (Task task : taskList.asList()) {
             String line;
 
             if (task instanceof Todo) {
