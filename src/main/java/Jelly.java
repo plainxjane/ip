@@ -1,7 +1,6 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.io.IOException;
 
 /** Runs Jelly's command-line task manager. */
@@ -12,50 +11,32 @@ public class Jelly {
      * @param args command-line arguments, which are not used
      */
     public static void main(String[] args) {
-        String banner = "╭──────────────────────╮\n"
-                + "│      J E L L Y       │\n"
-                + "│                      │\n"
-                + "│       .-\"\"\"\"-.       │\n"
-                + "│     .'  o  o  '.     │\n"
-                + "│    /      ∆     \\    │\n"
-                + "│    \\    '---'   /    │\n"
-                + "│     '._      _.'     │\n"
-                + "│        `----`        │\n"
-                + "╰──────────────────────╯";
-
-        System.out.println(banner);
-        System.out.println("\nHello! I'm Jelly, your squishy little assistant!");
-        System.out.println("What can I do for you? :)");
-
+        Ui ui = new Ui();
+        ui.showWelcome();
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> tasks;
+        TaskList tasks;
         Storage storage = new Storage();
+        Parser parser = new Parser();
 
         try {
             tasks = storage.load();
         } catch (IOException e) {
-            System.out.println("Jelly could not load your saved tasks.");
-            System.out.println("Jelly will start with an empty task list~");
-            tasks = new ArrayList<>();
+            ui.showLoadingError();
+            tasks = new TaskList();
         }
 
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
-            CommandType commandType = getCommandType(command);
+            CommandType commandType = parser.parse(command);
 
             try {
 
                 if (commandType == CommandType.BYE) {
-                    System.out.println("Bye! Stay jiggly~");
+                    ui.showBye();
                     break;
 
                 } else if (commandType == CommandType.LIST) {
-                    System.out.println("Your Jelly Tasks :)");
-                    System.out.println("----------------------------------------------------------");
-                    for (int i = 0; i < tasks.size(); i++) {
-                        System.out.println((i + 1) + "." + tasks.get(i));
-                    }
-                    System.out.println("----------------------------------------------------------");
+                    ui.showTaskList(tasks);
 
                 } else if ((commandType == CommandType.MARK || commandType == CommandType.UNMARK)
                         && (command.equals("mark") || command.equals("unmark"))) {
@@ -75,15 +56,15 @@ public class Jelly {
                     }
 
                     // mark task as done
-                    tasks.get(taskNumber - 1).markAsDone();
+                    tasks.getTask(taskNumber - 1).markAsDone();
                     try {
                         storage.save(tasks);
                     } catch (IOException e) {
-                        System.out.println("Jelly could not save your tasks.");
+                        ui.showSavingError();
                     }
 
                     System.out.println("Nice! Jelly has marked this task as done~");
-                    System.out.println("   [X] " + tasks.get(taskNumber - 1).getDescription());
+                    System.out.println("   [X] " + tasks.getTask(taskNumber - 1).getDescription());
 
                 } else if (commandType == CommandType.UNMARK) {
                     int taskNumber;
@@ -99,15 +80,15 @@ public class Jelly {
                     }
 
                     // mark task as undone
-                    tasks.get(taskNumber - 1).markAsNotDone();
+                    tasks.getTask(taskNumber - 1).markAsNotDone();
                     try {
                         storage.save(tasks);
                     } catch (IOException e) {
-                        System.out.println("Jelly could not save your tasks.");
+                        ui.showSavingError();
                     }
 
                     System.out.println("Ok, Jelly has marked this task as not done yet~");
-                    System.out.println("   [ ] " + tasks.get(taskNumber - 1).getDescription());
+                    System.out.println("   [ ] " + tasks.getTask(taskNumber - 1).getDescription());
 
                 } else if (commandType == CommandType.TODO) {
                     String description = command.substring(4).trim();
@@ -118,11 +99,11 @@ public class Jelly {
 
 
                     Todo todo = new Todo(description);
-                    tasks.add(todo);
+                    tasks.addTask(todo);
                     try {
                         storage.save(tasks);
                     } catch (IOException e) {
-                        System.out.println("Jelly could not save your tasks.");
+                        ui.showSavingError();
                     }
 
                     System.out.println("Got it! Jelly has added this task as a to-do:");
@@ -141,7 +122,7 @@ public class Jelly {
                             || parts[0].trim().isEmpty()
                             || parts[1].trim().isEmpty()) {
                         throw new JellyException(
-                                "Use: deadline <description> /by <date>");
+                                "Use: deadline <description> /by yyyy-mm-dd HHmm");
                     }
 
                     String description = parts[0].trim();
@@ -155,11 +136,11 @@ public class Jelly {
                     }
 
                     Deadline deadline = new Deadline(description, dateTime);
-                    tasks.add(deadline);
+                    tasks.addTask(deadline);
                     try {
                         storage.save(tasks);
                     } catch (IOException e) {
-                        System.out.println("Jelly could not save your tasks.");
+                        ui.showSavingError();
                     }
 
                     System.out.println("Got it! Jelly has added this task as a deadline:");
@@ -176,7 +157,7 @@ public class Jelly {
 
                     if (parts.length < 2 || parts[0].trim().isEmpty()) {
                         throw new JellyException(
-                                "Use: event <description> /from <start> /to <end>");
+                                "Use: event <description> /from yyyy-mm-dd HHmm /to yyyy-mm-dd HHmm");
                     }
 
                     String[] times = parts[1].split(" /to ", 2);
@@ -185,7 +166,7 @@ public class Jelly {
                             || times[0].trim().isEmpty()
                             || times[1].trim().isEmpty()) {
                         throw new JellyException(
-                                "Use: event <description> /from <start> /to <end>");
+                                "Use: event <description> /from yyyy-mm-dd HHmm /to yyyy-mm-dd HHmm");
                     }
 
                     String description = parts[0].trim();
@@ -208,11 +189,11 @@ public class Jelly {
                     }
 
                     Event event = new Event(description, dateTimeFrom, dateTimeTo);
-                    tasks.add(event);
+                    tasks.addTask(event);
                     try {
                         storage.save(tasks);
                     } catch (IOException e) {
-                        System.out.println("Jelly could not save your tasks.");
+                        ui.showSavingError();
                     }
 
                     System.out.println("Got it! Jelly has added this task as an event:");
@@ -236,7 +217,7 @@ public class Jelly {
                         throw new JellyException("Please enter a valid task number.");
                     }
 
-                    Task deletedTask = tasks.remove(taskNumber - 1);
+                    Task deletedTask = tasks.deleteTask(taskNumber - 1);
                     try {
                         storage.save(tasks);
                     } catch (IOException e) {
@@ -251,47 +232,10 @@ public class Jelly {
                     throw new JellyException("Yikes! Jelly doesn't recognize that command. Try again~");
                 }
             } catch (JellyException e) {
-                showError(e.getMessage());
+                ui.showError(e.getMessage());
             }
         }
 
     }
 
-    /**
-     * Identifies the command represented by an input line.
-     *
-     * @param command the raw command entered by the user
-     * @return the matching command type, or {@link CommandType#INVALID}
-     */
-    private static CommandType getCommandType(String command) {
-        if (command.equals("bye")) {
-            return CommandType.BYE;
-        } else if (command.equals("list")) {
-            return CommandType.LIST;
-        } else if (command.equals("todo") || command.startsWith("todo ")) {
-            return CommandType.TODO;
-        } else if (command.equals("deadline") || command.startsWith("deadline ")) {
-            return CommandType.DEADLINE;
-        } else if (command.equals("event") || command.startsWith("event ")) {
-            return CommandType.EVENT;
-        } else if (command.equals("mark") || command.startsWith("mark ")) {
-            return CommandType.MARK;
-        } else if (command.equals("unmark") || command.startsWith("unmark ")) {
-            return CommandType.UNMARK;
-        } else if (command.equals("delete") || command.startsWith("delete ")) {
-            return CommandType.DELETE;
-        }
-        return CommandType.INVALID;
-    }
-
-    /**
-     * Prints an error message between Jelly's standard divider lines.
-     *
-     * @param message the error message to display
-     */
-    private static void showError(String message) {
-        System.out.println("____________________________________________________________");
-        System.out.println(" " + message);
-        System.out.println("____________________________________________________________");
-    }
 }
