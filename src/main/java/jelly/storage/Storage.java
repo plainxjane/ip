@@ -75,7 +75,7 @@ public class Storage {
     /**
      * Saves all tasks to the data file.
      *
-     * @param tasks tasks to save
+     * @param taskList tasks to save
      * @throws IOException if the directory or file cannot be written
      */
     public void save(TaskList taskList) throws IOException {
