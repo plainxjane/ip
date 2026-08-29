@@ -1,6 +1,9 @@
 package jelly.ui;
 
+import jelly.model.Task;
 import jelly.model.TaskList;
+
+import java.util.Locale;
 
 /** Handles Jelly's interaction with the command-line user. */
 public class Ui {
@@ -30,6 +33,20 @@ public class Ui {
             System.out.println((i + 1) + "." + tasks.getTask(i));
         }
         System.out.println("----------------------------------------------------------");
+    }
+
+    /** Prints tasks whose descriptions contain the supplied keyword. */
+    public void showMatchingTasks(TaskList tasks, String keyword) {
+        String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
+        System.out.println("____________________________________________________________");
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.getTask(i);
+            if (task.getDescription().toLowerCase(Locale.ROOT).contains(normalizedKeyword)) {
+                System.out.println((i + 1) + "." + task);
+            }
+        }
+        System.out.println("____________________________________________________________");
     }
 
     /** Prints the standard formatted error message. */

@@ -52,6 +52,13 @@ public class Jelly {
                 } else if (commandType == CommandType.LIST) {
                     ui.showTaskList(tasks);
 
+                } else if (commandType == CommandType.FIND) {
+                    String keyword = command.substring(4).trim();
+                    if (keyword.isEmpty()) {
+                        throw new JellyException("Please enter a keyword to find.");
+                    }
+                    ui.showMatchingTasks(tasks, keyword);
+
                 } else if ((commandType == CommandType.MARK || commandType == CommandType.UNMARK)
                         && (command.equals("mark") || command.equals("unmark"))) {
                     throw new JellyException("Please enter a valid task number.");
