@@ -25,6 +25,8 @@ public class Parser {
             return CommandType.UNMARK;
         } else if (command.equals("delete") || command.startsWith("delete ")) {
             return CommandType.DELETE;
+        } else if (command.equals("find") || command.startsWith("find ")) {
+            return CommandType.FIND;
         }
         return CommandType.INVALID;
     }

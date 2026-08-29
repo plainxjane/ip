@@ -20,6 +20,7 @@ mark 1
 unmark 1
 delete 2
 list
+find milk
 bye
 ```
 
@@ -65,6 +66,10 @@ Your Jelly Tasks :)
 1.[T][ ] buy milk
 2.[E][ ] team meeting (from: Dec 02 2019 10:00 to: Dec 02 2019 11:00)
 ----------------------------------------------------------
+____________________________________________________________
+Here are the matching tasks in your list:
+1.[T][ ] buy milk
+____________________________________________________________
 Bye! Stay jiggly~
 ```
 
