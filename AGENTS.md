@@ -34,6 +34,8 @@ Use lightweight tags unless the user requests an annotated tag.
 When proposing or creating a commit message, include enough detail to explain the rationale for the change.
 Do not commit or push unless explicitly asked.
 
+All Java code must follow the project skill `.codex/skills/seedu-java-coding-standard/SKILL.md`, based on the SE-EDU Java basic and intermediate standard. All commit messages must follow `.codex/skills/seedu-git-standard/SKILL.md`, based on the SE-EDU Git conventions.
+
 ## UI testing
 
 After each code update, update `test/ui-test-plan.md` when the observable console behavior changes, then invoke the project-local `test-ui` skill by running:

@@ -78,12 +78,12 @@ public class Storage {
      * @param taskList tasks to save
      * @throws IOException if the directory or file cannot be written
      */
-    public void save(TaskList taskList) throws IOException {
+    public void save(TaskList tasks) throws IOException {
         Files.createDirectories(filePath.getParent());
 
         ArrayList<String> lines = new ArrayList<>();
 
-        for (Task task : taskList.asList()) {
+        for (Task task : tasks.asList()) {
             String line;
 
             if (task instanceof Todo) {

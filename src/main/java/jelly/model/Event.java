@@ -12,6 +12,7 @@ public class Event extends Task {
     private static final DateTimeFormatter DISPLAY_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
 
     /** Creates an incomplete event task.
+     *
      * @param description the text describing the event
      * @param from the event's starting time
      * @param to the event's ending time
@@ -22,17 +23,17 @@ public class Event extends Task {
         this.to = to;
     }
 
-    /** @return the event's starting time */
+    /** Returns the event's starting time. */
     public LocalDateTime getFrom() {
         return this.from;
     }
 
-    /** @return the event's ending time */
+    /** Returns the event's ending time. */
     public LocalDateTime getTo() {
         return this.to;
     }
 
-    /** @return the display form of this event task */
+    /** Returns the display form of this event task. */
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + this.from.format(DISPLAY_FORMAT) + " to: "

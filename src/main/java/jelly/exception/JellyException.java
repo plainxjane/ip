@@ -1,10 +1,11 @@
 package jelly.exception;
 
-/** Represents an error caused by invalid or unsuccessful Jelly operations. */
+/**
+ * Represents an expected error encountered while processing a Jelly command.
+ */
 public class JellyException extends Exception {
-
     /**
-     * Creates an exception describing an error specific to Jelly.
+     * Creates an exception with the supplied user-facing message.
      *
      * @param message the explanation of the error
      */

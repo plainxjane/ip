@@ -1,5 +1,10 @@
 package jelly;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.Scanner;
+
 import jelly.command.CommandType;
 import jelly.command.Parser;
 import jelly.exception.JellyException;
@@ -11,11 +16,6 @@ import jelly.model.Todo;
 import jelly.storage.Storage;
 import jelly.ui.Ui;
 import jelly.util.DateTimeParser;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
-import java.util.Scanner;
-import java.io.IOException;
 
 /** Runs Jelly's command-line task manager. */
 public class Jelly {
@@ -44,7 +44,6 @@ public class Jelly {
             CommandType commandType = parser.parse(command);
 
             try {
-
                 if (commandType == CommandType.BYE) {
                     ui.showBye();
                     break;
@@ -69,7 +68,6 @@ public class Jelly {
                         throw new JellyException("Please enter a valid task number.");
                     }
 
-                    // mark task as done
                     tasks.getTask(taskNumber - 1).markAsDone();
                     try {
                         storage.save(tasks);
@@ -93,7 +91,6 @@ public class Jelly {
                         throw new JellyException("Please enter a valid task number.");
                     }
 
-                    // mark task as undone
                     tasks.getTask(taskNumber - 1).markAsNotDone();
                     try {
                         storage.save(tasks);
