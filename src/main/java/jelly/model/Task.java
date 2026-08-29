@@ -3,11 +3,12 @@ package jelly.model;
 /** Represents a task stored in Jelly's task list. */
 public class Task {
     /** The text describing the task. */
-    protected String description;
+    private String description;
     /** Whether the task has been completed. */
-    protected boolean isDone;
+    private boolean isDone;
 
     /** Creates an incomplete task.
+     *
      * @param description the text describing the task
      */
     public Task(String description) {
@@ -25,22 +26,22 @@ public class Task {
         this.isDone = false;
     }
 
-    /** @return {@code X} if completed, or a blank space otherwise */
+    /** Returns {@code X} if completed, or a blank space otherwise. */
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
     }
 
-    /** @return the task description */
+    /** Returns the task description. */
     public String getDescription() {
         return this.description;
     }
 
-    /** @return whether this task has been completed */
+    /** Returns whether this task has been completed. */
     public boolean isDone() {
         return this.isDone;
     }
 
-    /** @return the display form of this task */
+    /** Returns the display form of this task. */
     @Override
     public String toString() {
         return "[" + this.getStatusIcon() + "] " + this.getDescription();

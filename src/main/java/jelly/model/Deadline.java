@@ -10,6 +10,7 @@ public class Deadline extends Task {
     private static final DateTimeFormatter DISPLAY_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
 
     /** Creates an incomplete deadline task.
+     *
      * @param description the text describing the deadline
      * @param by the deadline date or time
      */
@@ -18,12 +19,12 @@ public class Deadline extends Task {
         this.by = by;
     }
 
-    /** @return the deadline date or time */
+    /** Returns the deadline date or time. */
     public LocalDateTime getBy() {
         return this.by;
     }
 
-    /** @return the display form of this deadline task */
+    /** Returns the display form of this deadline task. */
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + this.by.format(DISPLAY_FORMAT) + ")";

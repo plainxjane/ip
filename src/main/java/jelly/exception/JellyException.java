@@ -1,8 +1,8 @@
 package jelly.exception;
 
+/** Represents an expected error encountered while processing a Jelly command. */
 public class JellyException extends Exception {
-
-    /* a custom exception class JellyException to represent exceptions specific to Jelly chatbot */
+    /** Creates an exception with the supplied user-facing message. */
     public JellyException(String message) {
         super(message);
     }
