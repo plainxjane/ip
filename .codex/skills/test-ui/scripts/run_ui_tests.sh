@@ -11,7 +11,7 @@ if [[ ! -f "$plan" ]]; then
   exit 2
 fi
 
-javac -d "$build_dir" "$repo_root"/src/main/java/*.java
+javac -d "$build_dir" $(find "$repo_root/src/main/java" -name '*.java' -print)
 
 python3 - "$plan" "$build_dir" <<'PY'
 import re
@@ -33,8 +33,8 @@ def normalize(value):
 for index, (name, aim, user_input, expected) in enumerate(cases, 1):
     user_input = user_input.strip("\n") + "\n"
     result = subprocess.run(
-        ["java", "-cp", build_dir, "Jelly"], input=user_input,
-        text=True, capture_output=True,
+        ["java", "-cp", build_dir, "jelly.Jelly"], input=user_input,
+        text=True, capture_output=True, cwd=build_dir,
     )
     actual = result.stdout + result.stderr
     print(f"\n=== Test case {index}: {name.strip()} ===")
