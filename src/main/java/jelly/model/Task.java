@@ -1,13 +1,20 @@
 package jelly.model;
 
-/** Represents a task stored in Jelly's task list. */
+/**
+ * Represents a task stored in Jelly's task list.
+ */
 public class Task {
-    /** The text describing the task. */
+    /**
+     * The text describing the task.
+     */
     private String description;
-    /** Whether the task has been completed. */
+    /**
+     * Whether the task has been completed.
+     */
     private boolean isDone;
 
-    /** Creates an incomplete task.
+    /**
+     * Creates an incomplete task.
      *
      * @param description the text describing the task
      */

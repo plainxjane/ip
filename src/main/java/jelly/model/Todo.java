@@ -1,9 +1,12 @@
 package jelly.model;
 
-/** Represents a basic to-do task. */
+/**
+ * Represents a basic to-do task.
+ */
 public class Todo extends Task {
 
-    /** Creates an incomplete to-do task.
+    /**
+     * Creates an incomplete to-do task.
      *
      * @param description the text describing the to-do
      */

@@ -1,5 +1,11 @@
 package jelly.storage;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
 import jelly.model.Deadline;
 import jelly.model.Event;
 import jelly.model.Task;
@@ -7,15 +13,13 @@ import jelly.model.TaskList;
 import jelly.model.Todo;
 import jelly.util.DateTimeParser;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-
-/** Saves and loads Jelly tasks from local data file. */
+/**
+ * Saves and loads Jelly tasks from local data file.
+ */
 public class Storage {
-    /** Location of the tasks' data file, relative to project root. */
+    /**
+     * Location of the tasks' data file, relative to project root.
+     */
     private final Path filePath;
 
     /** Creates storage using a default data file. */
@@ -32,7 +36,7 @@ public class Storage {
     public TaskList load() throws IOException {
         TaskList tasks = new TaskList();
 
-        /** if data file does not exist, handle it as an empty list */
+        // If the data file does not exist, handle it as an empty list.
         if (!Files.exists(filePath)) {
             return tasks;
         }
@@ -75,7 +79,7 @@ public class Storage {
     /**
      * Saves all tasks to the data file.
      *
-     * @param taskList tasks to save
+     * @param tasks tasks to save
      * @throws IOException if the directory or file cannot be written
      */
     public void save(TaskList tasks) throws IOException {

@@ -3,15 +3,19 @@ package jelly.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/** Represents a task that takes place during a specified time range. */
+/**
+ * Represents a task that takes place during a specified time range.
+ */
 public class Event extends Task {
+    private static final DateTimeFormatter DISPLAY_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
+
     /** The event's starting time. */
     protected LocalDateTime from;
     /** The event's ending time. */
     protected LocalDateTime to;
-    private static final DateTimeFormatter DISPLAY_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
 
-    /** Creates an incomplete event task.
+    /**
+     * Creates an incomplete event task.
      *
      * @param description the text describing the event
      * @param from the event's starting time

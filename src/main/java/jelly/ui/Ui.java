@@ -1,9 +1,9 @@
 package jelly.ui;
 
+import java.util.Locale;
+
 import jelly.model.Task;
 import jelly.model.TaskList;
-
-import java.util.Locale;
 
 /** Handles Jelly's interaction with the command-line user. */
 public class Ui {
