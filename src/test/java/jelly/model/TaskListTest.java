@@ -1,9 +1,9 @@
 package jelly.model;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -41,10 +41,7 @@ class TaskListTest {
 
         List<Task> tasks = taskList.asList();
 
-        assertThrows(
-                UnsupportedOperationException.class,
-                () -> tasks.add(new Todo("read book"))
-        );
+        assertThrows(UnsupportedOperationException.class, () -> tasks.add(new Todo("read book")));
         assertEquals(1, taskList.size());
     }
 
