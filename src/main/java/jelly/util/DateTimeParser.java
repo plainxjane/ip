@@ -13,7 +13,12 @@ public class DateTimeParser {
         // Utility class; do not instantiate.
     }
 
-    /** Parses the format entered by a user. */
+    /**
+     * Parses the format entered by a user.
+     *
+     * @param date the date-time text to parse
+     * @return the parsed date-time
+     */
     public static LocalDateTime parse(String date) {
         try {
             return LocalDateTime.parse(date, INPUT_FORMATTER);
