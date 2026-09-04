@@ -7,6 +7,12 @@ import jelly.model.TaskList;
 
 /** Handles Jelly's interaction with the command-line user. */
 public class Ui {
+    /** Separates the task-list heading, entries, and footer. */
+    private static final String TASK_SEPARATOR = "----------------------------------------------------";
+
+    /** Separates the find-results heading, entries, and footer. */
+    private static final String MATCH_SEPARATOR = "______________________________________________________";
+
     /** Prints Jelly's greeting and prompt. */
     public void showWelcome() {
         String banner = "╭──────────────────────╮\n"
@@ -27,18 +33,37 @@ public class Ui {
 
     /** Prints the current tasks with their one-based list numbers. */
     public void showTaskList(TaskList tasks) {
-        System.out.println("Your Jelly Tasks :)");
-        System.out.println("----------------------------------------------------------");
+        System.out.println(formatTaskList(tasks));
+    }
+
+    /**
+     * Formats the current tasks with their one-based list numbers.
+     *
+     * @param tasks the task list to format.
+     * @return the formatted task list.
+     */
+    public String formatTaskList(TaskList tasks) {
+        StringBuilder output = new StringBuilder();
+
+        output.append("Your Jelly Tasks :)\n");
+        output.append(TASK_SEPARATOR).append("\n");
+
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.getTask(i));
+            output.append(i + 1)
+                    .append(".")
+                    .append(tasks.getTask(i))
+                    .append("\n");
         }
-        System.out.println("----------------------------------------------------------");
+
+        output.append(TASK_SEPARATOR);
+
+        return output.toString();
     }
 
     /** Prints tasks whose descriptions contain the supplied keyword. */
     public void showMatchingTasks(TaskList tasks, String keyword) {
         String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
-        System.out.println("____________________________________________________________");
+        System.out.println(MATCH_SEPARATOR);
         System.out.println("Here are the matching tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.getTask(i);
@@ -46,14 +71,14 @@ public class Ui {
                 System.out.println((i + 1) + "." + task);
             }
         }
-        System.out.println("____________________________________________________________");
+        System.out.println(MATCH_SEPARATOR);
     }
 
     /** Prints the standard formatted error message. */
     public void showError(String message) {
-        System.out.println("____________________________________________________________");
+        System.out.println(MATCH_SEPARATOR);
         System.out.println(" " + message);
-        System.out.println("____________________________________________________________");
+        System.out.println(MATCH_SEPARATOR);
     }
 
     /** Prints the message used when loading saved tasks fails. */
