@@ -67,7 +67,9 @@ public class Ui {
         System.out.println("Here are the matching tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.getTask(i);
-            if (task.getDescription().toLowerCase(Locale.ROOT).contains(normalizedKeyword)) {
+            String normalizedDescription = task.getDescription().toLowerCase(Locale.ROOT);
+            boolean isMatch = normalizedDescription.contains(normalizedKeyword);
+            if (isMatch) {
                 System.out.println((i + 1) + "." + task);
             }
         }
