@@ -9,7 +9,7 @@ import java.util.stream.IntStream;
 /** Owns Jelly's collection of tasks and its basic list operations. */
 public class TaskList {
     /** The tasks managed by this list. */
-    private final ArrayList<Task> tasks;
+    private final List<Task> tasks;
 
     /** Creates an empty task list. */
     public TaskList() {
@@ -19,7 +19,7 @@ public class TaskList {
     /**
      * Creates a task list containing the supplied tasks.
      *
-     * @param tasks the initial tasks to copy into this list
+     * @param tasks the initial tasks to copy into this list.
      */
     public TaskList(Collection<? extends Task> tasks) {
         this.tasks = new ArrayList<>(tasks);
@@ -28,10 +28,9 @@ public class TaskList {
     /**
      * Adds a task to the list.
      *
-     * @param task the task to add
+     * @param task the task to add.
      */
     public void addTask(Task task) {
-
         assert task != null : "Task cannot be null";
         tasks.add(task);
     }
@@ -39,29 +38,27 @@ public class TaskList {
     /**
      * Removes and returns the task at a zero-based index.
      *
-     * @param index the zero-based position of the task to remove
-     * @return the removed task
+     * @param index the zero-based position of the task to remove.
+     * @return the removed task.
      */
     public Task deleteTask(int index) {
-
         return tasks.remove(index);
     }
 
     /**
      * Returns the task at a zero-based index.
      *
-     * @param index the zero-based position of the task to retrieve
-     * @return the task at the requested position
+     * @param index the zero-based position of the task to retrieve.
+     * @return the task at the requested position.
      */
     public Task getTask(int index) {
-
         return tasks.get(index);
     }
 
     /**
      * Returns the number of tasks.
      *
-     * @return the number of tasks currently in the list
+     * @return the number of tasks currently in the list.
      */
     public int size() {
         return tasks.size();
@@ -70,7 +67,7 @@ public class TaskList {
     /**
      * Provides read-only access for rendering and persistence.
      *
-     * @return an unmodifiable snapshot of the tasks
+     * @return an unmodifiable snapshot of the tasks.
      */
     public List<Task> asList() {
         return List.copyOf(tasks);

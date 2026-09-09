@@ -4,11 +4,11 @@ import jelly.model.TaskList;
 
 /** Handles Jelly's interaction with the command-line user. */
 public class Ui {
+    /** Jelly's farewell message, shared with {@code Jelly#computeCommandResult} for the GUI. */
+    public static final String BYE_MESSAGE = "Bye! Stay jiggly~";
+
     /** Separates the task-list heading, entries, and footer. */
     private static final String TASK_SEPARATOR = "----------------------------------------------------";
-
-    /** Separates the find-results heading, entries, and footer. */
-    private static final String MATCH_SEPARATOR = "______________________________________________________";
 
     /** Prints Jelly's greeting and prompt. */
     public void showWelcome() {
@@ -26,11 +26,6 @@ public class Ui {
         System.out.println(banner);
         System.out.println("\nHello! I'm Jelly, your squishy little assistant!");
         System.out.println("What can I do for you? :)");
-    }
-
-    /** Prints the current tasks with their one-based list numbers. */
-    public void showTaskList(TaskList tasks) {
-        System.out.println(formatTaskList(tasks));
     }
 
     /**
@@ -59,19 +54,19 @@ public class Ui {
 
     /** Prints tasks whose descriptions contain the supplied keyword. */
     public void showMatchingTasks(TaskList tasks, String keyword) {
-        System.out.println(MATCH_SEPARATOR);
+        System.out.println(TASK_SEPARATOR);
         System.out.println("Here are the matching tasks in your list:");
         for (int taskNumber : tasks.findMatchingTaskNumbers(keyword)) {
             System.out.println(taskNumber + "." + tasks.getTask(taskNumber - 1));
         }
-        System.out.println(MATCH_SEPARATOR);
+        System.out.println(TASK_SEPARATOR);
     }
 
     /** Prints the standard formatted error message. */
     public void showError(String message) {
-        System.out.println(MATCH_SEPARATOR);
+        System.out.println(TASK_SEPARATOR);
         System.out.println(" " + message);
-        System.out.println(MATCH_SEPARATOR);
+        System.out.println(TASK_SEPARATOR);
     }
 
     /** Prints the message used when loading saved tasks fails. */
@@ -87,6 +82,6 @@ public class Ui {
 
     /** Prints Jelly's farewell. */
     public void showBye() {
-        System.out.println("Bye! Stay jiggly~");
+        System.out.println(BYE_MESSAGE);
     }
 }

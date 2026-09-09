@@ -27,8 +27,8 @@ public class DialogBox extends HBox {
     /**
      * Creates a message box.
      *
-     * @param message the message to display
-     * @param image the avatar image to display
+     * @param message the message to display.
+     * @param image the avatar image to display.
      */
     public DialogBox(String message, Image image) {
         FXMLLoader loader = new FXMLLoader(
@@ -59,9 +59,9 @@ public class DialogBox extends HBox {
     /**
      * Creates a dialog box for user input.
      *
-     * @param message the user's message
-     * @param image the user's avatar
-     * @return a user-styled dialog box
+     * @param message the user's message.
+     * @param image the user's avatar.
+     * @return a user-styled dialog box.
      */
     public static DialogBox getUserDialog(String message, Image image) {
         return new DialogBox(message, image);
@@ -70,9 +70,9 @@ public class DialogBox extends HBox {
     /**
      * Creates a dialog box for Jelly's response.
      *
-     * @param message Jelly's response
-     * @param image Jelly's avatar
-     * @return a flipped Jelly-styled dialog box
+     * @param message Jelly's response.
+     * @param image Jelly's avatar.
+     * @return a flipped Jelly-styled dialog box.
      */
     public static DialogBox getJellyDialog(String message, Image image) {
         DialogBox dialogBox = new DialogBox(message, image);

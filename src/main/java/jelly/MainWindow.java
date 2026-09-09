@@ -36,7 +36,7 @@ public class MainWindow {
     /**
      * Injects the Jelly command-processing instance.
      *
-     * @param jelly the command-processing instance
+     * @param jelly the command-processing instance.
      */
     public void setJelly(Jelly jelly) {
         this.jelly = jelly;
@@ -45,8 +45,8 @@ public class MainWindow {
     /**
      * Injects the user and Jelly avatar images.
      *
-     * @param userImage the user's avatar
-     * @param jellyImage Jelly's avatar
+     * @param userImage the user's avatar.
+     * @param jellyImage Jelly's avatar.
      */
     public void setImages(Image userImage, Image jellyImage) {
         this.userImage = userImage;
