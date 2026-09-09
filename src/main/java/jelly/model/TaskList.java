@@ -7,7 +7,7 @@ import java.util.List;
 /** Owns Jelly's collection of tasks and its basic list operations. */
 public class TaskList {
     /** The tasks managed by this list. */
-    private final ArrayList<Task> tasks;
+    private final List<Task> tasks;
 
     /** Creates an empty task list. */
     public TaskList() {
@@ -29,7 +29,6 @@ public class TaskList {
      * @param task the task to add
      */
     public void addTask(Task task) {
-
         assert task != null : "Task cannot be null";
         tasks.add(task);
     }
@@ -41,7 +40,6 @@ public class TaskList {
      * @return the removed task
      */
     public Task deleteTask(int index) {
-
         return tasks.remove(index);
     }
 
@@ -52,7 +50,6 @@ public class TaskList {
      * @return the task at the requested position
      */
     public Task getTask(int index) {
-
         return tasks.get(index);
     }
 
