@@ -10,9 +10,9 @@ public class Event extends Task {
     private static final DateTimeFormatter DISPLAY_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
 
     /** The event's starting time. */
-    protected LocalDateTime from;
+    private LocalDateTime from;
     /** The event's ending time. */
-    protected LocalDateTime to;
+    private LocalDateTime to;
 
     /**
      * Creates an incomplete event task.
