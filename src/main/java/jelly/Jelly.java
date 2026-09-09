@@ -3,7 +3,6 @@ package jelly;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.Locale;
 import java.util.Scanner;
 
 import jelly.command.CommandType;
@@ -324,13 +323,12 @@ public class Jelly {
             throw new JellyException("Please enter a keyword to find.");
         }
 
-        String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
         StringBuilder response = new StringBuilder("Here are the matching tasks in your list:\n");
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.getTask(i);
-            if (task.getDescription().toLowerCase(Locale.ROOT).contains(normalizedKeyword)) {
-                response.append(i + 1).append(".").append(task).append("\n");
-            }
+        for (int taskNumber : tasks.findMatchingTaskNumbers(keyword)) {
+            response.append(taskNumber)
+                    .append(".")
+                    .append(tasks.getTask(taskNumber - 1))
+                    .append("\n");
         }
         return response.toString().trim();
     }
