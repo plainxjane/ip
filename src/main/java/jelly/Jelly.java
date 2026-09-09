@@ -87,17 +87,7 @@ public class Jelly {
                     throw new JellyException("Please enter a valid task number.");
 
                 } else if (commandType == CommandType.MARK) {
-                    int taskNumber;
-
-                    try {
-                        taskNumber = Integer.parseInt(command.substring(5).trim());
-                    } catch (NumberFormatException e) {
-                        throw new JellyException("Please enter a valid task number.");
-                    }
-
-                    if (taskNumber < 1 || taskNumber > tasks.size()) {
-                        throw new JellyException("Please enter a valid task number.");
-                    }
+                    int taskNumber = parseTaskNumber(command.substring(5).trim(), tasks);
 
                     tasks.getTask(taskNumber - 1).markAsDone();
                     saveCliTasks(storage, tasks, ui);
@@ -106,17 +96,7 @@ public class Jelly {
                     System.out.println("   [X] " + tasks.getTask(taskNumber - 1).getDescription());
 
                 } else if (commandType == CommandType.UNMARK) {
-                    int taskNumber;
-
-                    try {
-                        taskNumber = Integer.parseInt(command.substring(7).trim());
-                    } catch (NumberFormatException e) {
-                        throw new JellyException("Please enter a valid task number.");
-                    }
-
-                    if (taskNumber < 1 || taskNumber > tasks.size()) {
-                        throw new JellyException("Please enter a valid task number.");
-                    }
+                    int taskNumber = parseTaskNumber(command.substring(7).trim(), tasks);
 
                     tasks.getTask(taskNumber - 1).markAsNotDone();
                     saveCliTasks(storage, tasks, ui);
@@ -227,17 +207,7 @@ public class Jelly {
                     throw new JellyException("Please enter a task number to delete.");
 
                 } else if (commandType == CommandType.DELETE) {
-                    int taskNumber;
-
-                    try {
-                        taskNumber = Integer.parseInt(command.substring(7).trim());
-                    } catch (NumberFormatException e) {
-                        throw new JellyException("Please enter a valid task number.");
-                    }
-
-                    if (taskNumber < 1 || taskNumber > tasks.size()) {
-                        throw new JellyException("Please enter a valid task number.");
-                    }
+                    int taskNumber = parseTaskNumber(command.substring(7).trim(), tasks);
 
                     Task deletedTask = tasks.deleteTask(taskNumber - 1);
                     try {
@@ -444,6 +414,11 @@ public class Jelly {
 
     /** Parses and validates a one-based task number. */
     private int parseTaskNumber(String value) throws JellyException {
+        return parseTaskNumber(value, tasks);
+    }
+
+    /** Parses and validates a one-based task number for the supplied list. */
+    private static int parseTaskNumber(String value, TaskList tasks) throws JellyException {
         try {
             int taskNumber = Integer.parseInt(value);
             if (taskNumber < 1 || taskNumber > tasks.size()) {
@@ -474,4 +449,3 @@ public class Jelly {
     }
 
 }
-
