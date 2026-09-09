@@ -87,6 +87,8 @@ public class Storage {
 
         ArrayList<String> lines = new ArrayList<>();
 
+        assert tasks != null : "Tasklist should not be null";
+
         for (Task task : tasks.asList()) {
             String line;
 
