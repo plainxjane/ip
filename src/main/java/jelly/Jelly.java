@@ -100,11 +100,7 @@ public class Jelly {
                     }
 
                     tasks.getTask(taskNumber - 1).markAsDone();
-                    try {
-                        storage.save(tasks);
-                    } catch (IOException e) {
-                        ui.showSavingError();
-                    }
+                    saveCliTasks(storage, tasks, ui);
 
                     System.out.println("Nice! Jelly has marked this task as done~");
                     System.out.println("   [X] " + tasks.getTask(taskNumber - 1).getDescription());
@@ -123,11 +119,7 @@ public class Jelly {
                     }
 
                     tasks.getTask(taskNumber - 1).markAsNotDone();
-                    try {
-                        storage.save(tasks);
-                    } catch (IOException e) {
-                        ui.showSavingError();
-                    }
+                    saveCliTasks(storage, tasks, ui);
 
                     System.out.println("Ok, Jelly has marked this task as not done yet~");
                     System.out.println("   [ ] " + tasks.getTask(taskNumber - 1).getDescription());
@@ -142,11 +134,7 @@ public class Jelly {
 
                     Todo todo = new Todo(description);
                     tasks.addTask(todo);
-                    try {
-                        storage.save(tasks);
-                    } catch (IOException e) {
-                        ui.showSavingError();
-                    }
+                    saveCliTasks(storage, tasks, ui);
 
                     System.out.println("Got it! Jelly has added this task as a to-do:");
                     System.out.println("   " + todo);
@@ -179,11 +167,7 @@ public class Jelly {
 
                     Deadline deadline = new Deadline(description, dateTime);
                     tasks.addTask(deadline);
-                    try {
-                        storage.save(tasks);
-                    } catch (IOException e) {
-                        ui.showSavingError();
-                    }
+                    saveCliTasks(storage, tasks, ui);
 
                     System.out.println("Got it! Jelly has added this task as a deadline:");
                     System.out.println("   " + deadline);
@@ -232,11 +216,7 @@ public class Jelly {
 
                     Event event = new Event(description, dateTimeFrom, dateTimeTo);
                     tasks.addTask(event);
-                    try {
-                        storage.save(tasks);
-                    } catch (IOException e) {
-                        ui.showSavingError();
-                    }
+                    saveCliTasks(storage, tasks, ui);
 
                     System.out.println("Got it! Jelly has added this task as an event:");
                     System.out.println("   " + event);
@@ -278,6 +258,15 @@ public class Jelly {
             }
         }
 
+    }
+
+    /** Saves tasks for the CLI and reports persistence failures to the user. */
+    private static void saveCliTasks(Storage storage, TaskList tasks, Ui ui) {
+        try {
+            storage.save(tasks);
+        } catch (IOException e) {
+            ui.showSavingError();
+        }
     }
 
     /**
