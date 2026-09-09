@@ -135,7 +135,7 @@ public class Jelly {
             case EVENT:
                 return executeEventCommand(command);
             case BYE:
-                return "Bye! Stay jiggly~";
+                return Ui.BYE_MESSAGE;
             default:
                 throw new JellyException("Yikes! Jelly doesn't recognize that command. Try again~");
         }
@@ -216,7 +216,7 @@ public class Jelly {
 
     /** Deletes a task. */
     private String executeDeleteCommand(String command) throws JellyException {
-        if (command.equals("delete")) {
+        if (command.equals(DELETE_COMMAND)) {
             throw new JellyException("Please enter a task number to delete.");
         }
 
@@ -229,7 +229,7 @@ public class Jelly {
 
     /** Creates and saves a deadline task. */
     private String executeDeadlineCommand(String command) throws JellyException {
-        if (!command.startsWith("deadline ")) {
+        if (!command.startsWith(DEADLINE_COMMAND + " ")) {
             throw new JellyException("A Jelly deadline needs a description and a /by date.");
         }
 
@@ -249,7 +249,7 @@ public class Jelly {
 
     /** Creates and saves an event task. */
     private String executeEventCommand(String command) throws JellyException {
-        if (!command.startsWith("event ")) {
+        if (!command.startsWith(EVENT_COMMAND + " ")) {
             throw new JellyException("A Jelly event needs a description, start time, and end time.");
         }
 
@@ -277,18 +277,8 @@ public class Jelly {
                 + "\n\nNow you have " + tasks.size() + " tasks in your Jelly list~";
     }
 
-    /** Parses and validates a one-based task number. */
+    /** Parses and validates a one-based task number against the current task list. */
     private int parseTaskNumber(String value) throws JellyException {
-        return parseTaskNumber(value, tasks);
-    }
-
-    /** Returns the trimmed argument following a command prefix. */
-    private static String argumentAfter(String command, String commandPrefix) {
-        return command.substring(commandPrefix.length()).trim();
-    }
-
-    /** Parses and validates a one-based task number for the supplied list. */
-    private static int parseTaskNumber(String value, TaskList tasks) throws JellyException {
         try {
             int taskNumber = Integer.parseInt(value);
             if (taskNumber < 1 || taskNumber > tasks.size()) {
@@ -299,6 +289,11 @@ public class Jelly {
         } catch (NumberFormatException e) {
             throw new JellyException("Please enter a valid task number.");
         }
+    }
+
+    /** Returns the trimmed argument following a command prefix. */
+    private static String argumentAfter(String command, String commandPrefix) {
+        return command.substring(commandPrefix.length()).trim();
     }
 
     /** Parses a date and converts parsing failures into Jelly errors. */

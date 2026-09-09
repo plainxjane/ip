@@ -4,6 +4,9 @@ import jelly.model.TaskList;
 
 /** Handles Jelly's interaction with the command-line user. */
 public class Ui {
+    /** Jelly's farewell message, shared with {@code Jelly#computeCommandResult} for the GUI. */
+    public static final String BYE_MESSAGE = "Bye! Stay jiggly~";
+
     /** Separates the task-list heading, entries, and footer. */
     private static final String TASK_SEPARATOR = "----------------------------------------------------";
 
@@ -79,6 +82,6 @@ public class Ui {
 
     /** Prints Jelly's farewell. */
     public void showBye() {
-        System.out.println("Bye! Stay jiggly~");
+        System.out.println(BYE_MESSAGE);
     }
 }
