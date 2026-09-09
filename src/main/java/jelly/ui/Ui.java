@@ -10,9 +10,6 @@ public class Ui {
     /** Separates the task-list heading, entries, and footer. */
     private static final String TASK_SEPARATOR = "----------------------------------------------------";
 
-    /** Separates the find-results heading, entries, and footer. */
-    private static final String MATCH_SEPARATOR = "______________________________________________________";
-
     /** Prints Jelly's greeting and prompt. */
     public void showWelcome() {
         String banner = "╭──────────────────────╮\n"
@@ -53,20 +50,6 @@ public class Ui {
         output.append(TASK_SEPARATOR);
 
         return output.toString();
-    }
-
-    /** Prints the standard formatted error message. */
-    public void showError(String message) {
-        System.out.println(MATCH_SEPARATOR);
-        System.out.println(" " + message);
-        System.out.println(MATCH_SEPARATOR);
-    }
-
-    /** Prints the supplied content between separator lines, e.g. for find results. */
-    public void showWrapped(String content) {
-        System.out.println(MATCH_SEPARATOR);
-        System.out.println(content);
-        System.out.println(MATCH_SEPARATOR);
     }
 
     /** Prints the message used when loading saved tasks fails. */

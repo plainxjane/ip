@@ -55,11 +55,9 @@ public class Jelly {
     /**
      * Starts Jelly, reads commands from standard input, and updates the task list.
      *
-     * <p>Each command's result is computed by {@link #computeCommandResult(String)}, the same
-     * logic the GUI uses via {@link #executeCommand(String)}, so validation and task updates
-     * live in exactly one place. Only the CLI's plain-text decoration (wrapping find results
-     * and errors between separator lines) is handled here, since that presentation is specific
-     * to the console and not shared with the GUI.
+     * <p>The CLI is a thin wrapper around {@link #executeCommand(String)}, the same entry point
+     * the GUI uses, and prints exactly what it returns: the CLI exists mainly for testing, so it
+     * shows the same output as the GUI rather than its own separately decorated version.
      *
      * @param args command-line arguments, which are not used.
      */
@@ -70,23 +68,13 @@ public class Jelly {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
-            CommandType commandType = jelly.parser.parse(command);
 
-            if (commandType == CommandType.BYE) {
+            if (jelly.parser.parse(command) == CommandType.BYE) {
                 jelly.ui.showBye();
                 break;
             }
 
-            try {
-                String result = jelly.computeCommandResult(command);
-                if (commandType == CommandType.FIND) {
-                    jelly.ui.showWrapped(result);
-                } else {
-                    System.out.println(result);
-                }
-            } catch (JellyException e) {
-                jelly.ui.showError(e.getMessage());
-            }
+            System.out.println(jelly.executeCommand(command));
         }
     }
 
@@ -97,47 +85,33 @@ public class Jelly {
      * @return the response that should be displayed.
      */
     public String executeCommand(String command) {
-        try {
-            return computeCommandResult(command);
-        } catch (JellyException e) {
-            return e.getMessage();
-        }
-    }
-
-    /**
-     * Dispatches one command to the matching handler and returns its plain-text result.
-     *
-     * <p>The result carries no CLI- or GUI-specific decoration (e.g. separator lines);
-     * callers apply whatever presentation their interface needs.
-     *
-     * @param command the command to process.
-     * @return the plain-text result of running the command.
-     * @throws JellyException if the command is invalid or fails validation.
-     */
-    private String computeCommandResult(String command) throws JellyException {
         CommandType commandType = parser.parse(command);
 
-        switch (commandType) {
-            case LIST:
-                return ui.formatTaskList(tasks);
-            case TODO:
-                return executeTodoCommand(command);
-            case FIND:
-                return executeFindCommand(command);
-            case MARK:
-                return executeMarkCommand(command, true);
-            case UNMARK:
-                return executeMarkCommand(command, false);
-            case DELETE:
-                return executeDeleteCommand(command);
-            case DEADLINE:
-                return executeDeadlineCommand(command);
-            case EVENT:
-                return executeEventCommand(command);
-            case BYE:
-                return Ui.BYE_MESSAGE;
-            default:
-                throw new JellyException("Yikes! Jelly doesn't recognize that command. Try again~");
+        try {
+            switch (commandType) {
+                case LIST:
+                    return ui.formatTaskList(tasks);
+                case TODO:
+                    return executeTodoCommand(command);
+                case FIND:
+                    return executeFindCommand(command);
+                case MARK:
+                    return executeMarkCommand(command, true);
+                case UNMARK:
+                    return executeMarkCommand(command, false);
+                case DELETE:
+                    return executeDeleteCommand(command);
+                case DEADLINE:
+                    return executeDeadlineCommand(command);
+                case EVENT:
+                    return executeEventCommand(command);
+                case BYE:
+                    return Ui.BYE_MESSAGE;
+                default:
+                    throw new JellyException("Yikes! Jelly doesn't recognize that command. Try again~");
+            }
+        } catch (JellyException e) {
+            return e.getMessage();
         }
     }
 
