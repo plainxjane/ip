@@ -460,6 +460,7 @@ public class Jelly {
             if (taskNumber < 1 || taskNumber > tasks.size()) {
                 throw new JellyException("Please enter a valid task number.");
             }
+            assert taskNumber >= 1 && taskNumber <= tasks.size() : "Task number must refer to an existing task";
             return taskNumber;
         } catch (NumberFormatException e) {
             throw new JellyException("Please enter a valid task number.");

@@ -29,6 +29,8 @@ public class TaskList {
      * @param task the task to add
      */
     public void addTask(Task task) {
+
+        assert task != null : "Task cannot be null";
         tasks.add(task);
     }
 
@@ -39,6 +41,7 @@ public class TaskList {
      * @return the removed task
      */
     public Task deleteTask(int index) {
+
         return tasks.remove(index);
     }
 
@@ -49,6 +52,7 @@ public class TaskList {
      * @return the task at the requested position
      */
     public Task getTask(int index) {
+
         return tasks.get(index);
     }
 
