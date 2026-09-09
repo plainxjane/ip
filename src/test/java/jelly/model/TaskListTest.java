@@ -58,4 +58,14 @@ class TaskListTest {
 
         assertThrows(IndexOutOfBoundsException.class, () -> taskList.deleteTask(0));
     }
+
+    @Test
+    void findMatchingTaskNumbers_returnsOneBasedMatchingPositions() {
+        TaskList taskList = new TaskList(List.of(
+                new Todo("buy groceries"),
+                new Todo("read book"),
+                new Todo("buy a book")));
+
+        assertEquals(List.of(1, 3), taskList.findMatchingTaskNumbers("BUY"));
+    }
 }

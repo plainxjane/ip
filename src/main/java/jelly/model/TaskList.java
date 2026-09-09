@@ -3,6 +3,8 @@ package jelly.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.IntStream;
 
 /** Owns Jelly's collection of tasks and its basic list operations. */
 public class TaskList {
@@ -68,5 +70,22 @@ public class TaskList {
      */
     public List<Task> asList() {
         return List.copyOf(tasks);
+    }
+
+    /**
+     * Finds one-based positions of tasks whose descriptions contain a keyword.
+     *
+     * @param keyword the keyword to search for
+     * @return matching task positions in their original order
+     */
+    public List<Integer> findMatchingTaskNumbers(String keyword) {
+        String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
+        return IntStream.range(0, tasks.size())
+                .filter(index -> tasks.get(index).getDescription()
+                        .toLowerCase(Locale.ROOT)
+                        .contains(normalizedKeyword))
+                .map(index -> index + 1)
+                .boxed()
+                .toList();
     }
 }
