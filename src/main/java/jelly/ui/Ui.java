@@ -52,6 +52,23 @@ public class Ui {
         return output.toString();
     }
 
+    /** Prints tasks whose descriptions contain the supplied keyword. */
+    public void showMatchingTasks(TaskList tasks, String keyword) {
+        System.out.println(TASK_SEPARATOR);
+        System.out.println("Here are the matching tasks in your list:");
+        for (int taskNumber : tasks.findMatchingTaskNumbers(keyword)) {
+            System.out.println(taskNumber + "." + tasks.getTask(taskNumber - 1));
+        }
+        System.out.println(TASK_SEPARATOR);
+    }
+
+    /** Prints the standard formatted error message. */
+    public void showError(String message) {
+        System.out.println(TASK_SEPARATOR);
+        System.out.println(" " + message);
+        System.out.println(TASK_SEPARATOR);
+    }
+
     /** Prints the message used when loading saved tasks fails. */
     public void showLoadingError() {
         System.out.println("Jelly could not load your saved tasks.");
