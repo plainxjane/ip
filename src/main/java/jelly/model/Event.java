@@ -7,12 +7,13 @@ import java.time.format.DateTimeFormatter;
  * Represents a task that takes place during a specified time range.
  */
 public class Event extends Task {
-    private static final DateTimeFormatter DISPLAY_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
+    private static final DateTimeFormatter DISPLAY_FORMAT =
+            DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
 
     /** The event's starting time. */
-    protected LocalDateTime from;
+    private final LocalDateTime from;
     /** The event's ending time. */
-    protected LocalDateTime to;
+    private final LocalDateTime to;
 
     /**
      * Creates an incomplete event task.

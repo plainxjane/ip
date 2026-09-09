@@ -21,6 +21,14 @@ import jelly.util.DateTimeParser;
 /** Runs Jelly's command-line task manager. */
 public class Jelly {
 
+    private static final String TODO_COMMAND = "todo";
+    private static final String DEADLINE_COMMAND = "deadline";
+    private static final String EVENT_COMMAND = "event";
+    private static final String MARK_COMMAND = "mark";
+    private static final String UNMARK_COMMAND = "unmark";
+    private static final String DELETE_COMMAND = "delete";
+    private static final String FIND_COMMAND = "find";
+
     private final TaskList tasks;
     private final Storage storage;
     private final Parser parser;
@@ -76,7 +84,7 @@ public class Jelly {
                     ui.showTaskList(tasks);
 
                 } else if (commandType == CommandType.FIND) {
-                    String keyword = command.substring(4).trim();
+                    String keyword = argumentAfter(command, FIND_COMMAND);
                     if (keyword.isEmpty()) {
                         throw new JellyException("Please enter a keyword to find.");
                     }
@@ -87,53 +95,25 @@ public class Jelly {
                     throw new JellyException("Please enter a valid task number.");
 
                 } else if (commandType == CommandType.MARK) {
-                    int taskNumber;
-
-                    try {
-                        taskNumber = Integer.parseInt(command.substring(5).trim());
-                    } catch (NumberFormatException e) {
-                        throw new JellyException("Please enter a valid task number.");
-                    }
-
-                    if (taskNumber < 1 || taskNumber > tasks.size()) {
-                        throw new JellyException("Please enter a valid task number.");
-                    }
+                    int taskNumber = parseTaskNumber(argumentAfter(command, MARK_COMMAND), tasks);
 
                     tasks.getTask(taskNumber - 1).markAsDone();
-                    try {
-                        storage.save(tasks);
-                    } catch (IOException e) {
-                        ui.showSavingError();
-                    }
+                    saveCliTasks(storage, tasks, ui);
 
                     System.out.println("Nice! Jelly has marked this task as done~");
                     System.out.println("   [X] " + tasks.getTask(taskNumber - 1).getDescription());
 
                 } else if (commandType == CommandType.UNMARK) {
-                    int taskNumber;
-
-                    try {
-                        taskNumber = Integer.parseInt(command.substring(7).trim());
-                    } catch (NumberFormatException e) {
-                        throw new JellyException("Please enter a valid task number.");
-                    }
-
-                    if (taskNumber < 1 || taskNumber > tasks.size()) {
-                        throw new JellyException("Please enter a valid task number.");
-                    }
+                    int taskNumber = parseTaskNumber(argumentAfter(command, UNMARK_COMMAND), tasks);
 
                     tasks.getTask(taskNumber - 1).markAsNotDone();
-                    try {
-                        storage.save(tasks);
-                    } catch (IOException e) {
-                        ui.showSavingError();
-                    }
+                    saveCliTasks(storage, tasks, ui);
 
                     System.out.println("Ok, Jelly has marked this task as not done yet~");
                     System.out.println("   [ ] " + tasks.getTask(taskNumber - 1).getDescription());
 
                 } else if (commandType == CommandType.TODO) {
-                    String description = command.substring(4).trim();
+                    String description = argumentAfter(command, TODO_COMMAND);
 
                     if (description.isEmpty()) {
                         throw new JellyException("A Jelly to-do description cannot be empty!");
@@ -142,11 +122,7 @@ public class Jelly {
 
                     Todo todo = new Todo(description);
                     tasks.addTask(todo);
-                    try {
-                        storage.save(tasks);
-                    } catch (IOException e) {
-                        ui.showSavingError();
-                    }
+                    saveCliTasks(storage, tasks, ui);
 
                     System.out.println("Got it! Jelly has added this task as a to-do:");
                     System.out.println("   " + todo);
@@ -157,7 +133,7 @@ public class Jelly {
                         throw new JellyException("A Jelly deadline needs a description and a /by date.");
                     }
 
-                    String input = command.substring(9);
+                    String input = argumentAfter(command, DEADLINE_COMMAND);
                     String[] parts = input.split(" /by ", 2);
 
                     if (parts.length < 2
@@ -179,11 +155,7 @@ public class Jelly {
 
                     Deadline deadline = new Deadline(description, dateTime);
                     tasks.addTask(deadline);
-                    try {
-                        storage.save(tasks);
-                    } catch (IOException e) {
-                        ui.showSavingError();
-                    }
+                    saveCliTasks(storage, tasks, ui);
 
                     System.out.println("Got it! Jelly has added this task as a deadline:");
                     System.out.println("   " + deadline);
@@ -194,7 +166,7 @@ public class Jelly {
                         throw new JellyException("A Jelly event needs a description, start time, and end time.");
                     }
 
-                    String input = command.substring(6).trim();
+                    String input = argumentAfter(command, EVENT_COMMAND);
                     String[] parts = input.split(" /from ", 2);
 
                     if (parts.length < 2 || parts[0].trim().isEmpty()) {
@@ -232,11 +204,7 @@ public class Jelly {
 
                     Event event = new Event(description, dateTimeFrom, dateTimeTo);
                     tasks.addTask(event);
-                    try {
-                        storage.save(tasks);
-                    } catch (IOException e) {
-                        ui.showSavingError();
-                    }
+                    saveCliTasks(storage, tasks, ui);
 
                     System.out.println("Got it! Jelly has added this task as an event:");
                     System.out.println("   " + event);
@@ -247,17 +215,7 @@ public class Jelly {
                     throw new JellyException("Please enter a task number to delete.");
 
                 } else if (commandType == CommandType.DELETE) {
-                    int taskNumber;
-
-                    try {
-                        taskNumber = Integer.parseInt(command.substring(7).trim());
-                    } catch (NumberFormatException e) {
-                        throw new JellyException("Please enter a valid task number.");
-                    }
-
-                    if (taskNumber < 1 || taskNumber > tasks.size()) {
-                        throw new JellyException("Please enter a valid task number.");
-                    }
+                    int taskNumber = parseTaskNumber(argumentAfter(command, DELETE_COMMAND), tasks);
 
                     Task deletedTask = tasks.deleteTask(taskNumber - 1);
                     try {
@@ -278,6 +236,15 @@ public class Jelly {
             }
         }
 
+    }
+
+    /** Saves tasks for the CLI and reports persistence failures to the user. */
+    private static void saveCliTasks(Storage storage, TaskList tasks, Ui ui) {
+        try {
+            storage.save(tasks);
+        } catch (IOException e) {
+            ui.showSavingError();
+        }
     }
 
     /**
@@ -325,7 +292,7 @@ public class Jelly {
      * @throws JellyException if the description is empty.
      */
     private String executeTodoCommand(String command) throws JellyException {
-        String description = command.substring(4).trim();
+        String description = argumentAfter(command, TODO_COMMAND);
 
         if (description.isEmpty()) {
             throw new JellyException("A Jelly to-do description cannot be empty!");
@@ -352,7 +319,7 @@ public class Jelly {
 
     /** Finds tasks whose descriptions contain the requested keyword. */
     private String executeFindCommand(String command) throws JellyException {
-        String keyword = command.substring(4).trim();
+        String keyword = argumentAfter(command, FIND_COMMAND);
         if (keyword.isEmpty()) {
             throw new JellyException("Please enter a keyword to find.");
         }
@@ -370,12 +337,12 @@ public class Jelly {
 
     /** Marks or unmarks a task. */
     private String executeMarkCommand(String command, boolean mark) throws JellyException {
-        String keyword = mark ? "mark" : "unmark";
+        String keyword = mark ? MARK_COMMAND : UNMARK_COMMAND;
         if (command.equals(keyword)) {
             throw new JellyException("Please enter a valid task number.");
         }
 
-        int taskNumber = parseTaskNumber(command.substring(keyword.length()).trim());
+        int taskNumber = parseTaskNumber(argumentAfter(command, keyword));
         Task task = tasks.getTask(taskNumber - 1);
         if (mark) {
             task.markAsDone();
@@ -396,7 +363,7 @@ public class Jelly {
             throw new JellyException("Please enter a task number to delete.");
         }
 
-        int taskNumber = parseTaskNumber(command.substring(7).trim());
+        int taskNumber = parseTaskNumber(argumentAfter(command, DELETE_COMMAND));
         Task deletedTask = tasks.deleteTask(taskNumber - 1);
         saveTasks();
         return "Congrats! Jelly has removed this task for you :)\n" + deletedTask
@@ -409,7 +376,7 @@ public class Jelly {
             throw new JellyException("A Jelly deadline needs a description and a /by date.");
         }
 
-        String[] parts = command.substring(9).split(" /by ", 2);
+        String[] parts = argumentAfter(command, DEADLINE_COMMAND).split(" /by ", 2);
         if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
             throw new JellyException("Use: deadline <description> /by yyyy-mm-dd HHmm");
         }
@@ -429,7 +396,7 @@ public class Jelly {
             throw new JellyException("A Jelly event needs a description, start time, and end time.");
         }
 
-        String[] parts = command.substring(6).trim().split(" /from ", 2);
+        String[] parts = argumentAfter(command, EVENT_COMMAND).split(" /from ", 2);
         if (parts.length < 2 || parts[0].trim().isEmpty()) {
             throw new JellyException("Use: event <description> /from yyyy-mm-dd HHmm /to yyyy-mm-dd HHmm");
         }
@@ -455,6 +422,16 @@ public class Jelly {
 
     /** Parses and validates a one-based task number. */
     private int parseTaskNumber(String value) throws JellyException {
+        return parseTaskNumber(value, tasks);
+    }
+
+    /** Returns the trimmed argument following a command prefix. */
+    private static String argumentAfter(String command, String commandPrefix) {
+        return command.substring(commandPrefix.length()).trim();
+    }
+
+    /** Parses and validates a one-based task number for the supplied list. */
+    private static int parseTaskNumber(String value, TaskList tasks) throws JellyException {
         try {
             int taskNumber = Integer.parseInt(value);
             if (taskNumber < 1 || taskNumber > tasks.size()) {
