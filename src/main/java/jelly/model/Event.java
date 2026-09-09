@@ -18,9 +18,9 @@ public class Event extends Task {
     /**
      * Creates an incomplete event task.
      *
-     * @param description the text describing the event
-     * @param from the event's starting time
-     * @param to the event's ending time
+     * @param description the text describing the event.
+     * @param from the event's starting time.
+     * @param to the event's ending time.
      */
     public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);

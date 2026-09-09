@@ -36,8 +36,8 @@ public class Storage {
     /**
      * Loads tasks from the data file.
      *
-     * @return the saved tasks, or an empty list if the file does not exist
-     * @throws IOException if the file cannot be read
+     * @return the saved tasks, or an empty list if the file does not exist.
+     * @throws IOException if the file cannot be read.
      */
     public TaskList load() throws IOException {
         TaskList tasks = new TaskList();
@@ -85,8 +85,8 @@ public class Storage {
     /**
      * Saves all tasks to the data file.
      *
-     * @param tasks tasks to save
-     * @throws IOException if the directory or file cannot be written
+     * @param tasks tasks to save.
+     * @throws IOException if the directory or file cannot be written.
      */
     public void save(TaskList tasks) throws IOException {
         Files.createDirectories(filePath.getParent());

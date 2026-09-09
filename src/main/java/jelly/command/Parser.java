@@ -5,8 +5,8 @@ public class Parser {
     /**
      * Identifies the command represented by an input line.
      *
-     * @param command the raw command entered by the user
-     * @return the recognized command type, or {@link CommandType#INVALID} if it is not recognized
+     * @param command the raw command entered by the user.
+     * @return the recognized command type, or {@link CommandType#INVALID} if it is not recognized.
      */
     public CommandType parse(String command) {
         if (command.equals("bye")) {

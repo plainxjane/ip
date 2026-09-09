@@ -55,10 +55,6 @@ public class Jelly {
     /**
      * Starts Jelly, reads commands from standard input, and updates the task list.
      *
-     * <p>The CLI is a thin wrapper around {@link #executeCommand(String)}, the same entry point
-     * the GUI uses, and prints exactly what it returns: the CLI exists mainly for testing, so it
-     * shows the same output as the GUI rather than its own separately decorated version.
-     *
      * @param args command-line arguments, which are not used.
      */
     public static void main(String[] args) {
