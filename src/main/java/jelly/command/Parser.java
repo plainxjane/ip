@@ -13,21 +13,26 @@ public class Parser {
             return CommandType.BYE;
         } else if (command.equals("list")) {
             return CommandType.LIST;
-        } else if (command.equals("todo") || command.startsWith("todo ")) {
+        } else if (matchesCommand(command, "todo")) {
             return CommandType.TODO;
-        } else if (command.equals("deadline") || command.startsWith("deadline ")) {
+        } else if (matchesCommand(command, "deadline")) {
             return CommandType.DEADLINE;
-        } else if (command.equals("event") || command.startsWith("event ")) {
+        } else if (matchesCommand(command, "event")) {
             return CommandType.EVENT;
-        } else if (command.equals("mark") || command.startsWith("mark ")) {
+        } else if (matchesCommand(command, "mark")) {
             return CommandType.MARK;
-        } else if (command.equals("unmark") || command.startsWith("unmark ")) {
+        } else if (matchesCommand(command, "unmark")) {
             return CommandType.UNMARK;
-        } else if (command.equals("delete") || command.startsWith("delete ")) {
+        } else if (matchesCommand(command, "delete")) {
             return CommandType.DELETE;
-        } else if (command.equals("find") || command.startsWith("find ")) {
+        } else if (matchesCommand(command, "find")) {
             return CommandType.FIND;
         }
         return CommandType.INVALID;
+    }
+
+    /** Returns whether input is a command by itself or followed by an argument. */
+    private static boolean matchesCommand(String input, String command) {
+        return input.equals(command) || input.startsWith(command + " ");
     }
 }
