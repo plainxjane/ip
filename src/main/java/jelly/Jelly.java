@@ -46,6 +46,7 @@ public class Jelly {
         try {
             loadedTasks = storage.load();
         } catch (IOException e) {
+            ui.showLoadingError();
             loadedTasks = new TaskList();
         }
         tasks = loadedTasks;
@@ -54,196 +55,38 @@ public class Jelly {
     /**
      * Starts Jelly, reads commands from standard input, and updates the task list.
      *
+     * <p>Each command's result is computed by {@link #computeCommandResult(String)}, the same
+     * logic the GUI uses via {@link #executeCommand(String)}, so validation and task updates
+     * live in exactly one place. Only the CLI's plain-text decoration (wrapping find results
+     * and errors between separator lines) is handled here, since that presentation is specific
+     * to the console and not shared with the GUI.
+     *
      * @param args command-line arguments, which are not used.
      */
     public static void main(String[] args) {
-        Ui ui = new Ui();
-        ui.showWelcome();
+        Jelly jelly = new Jelly();
+        jelly.ui.showWelcome();
+
         Scanner scanner = new Scanner(System.in);
-        TaskList tasks;
-        Storage storage = new Storage();
-        Parser parser = new Parser();
-
-        try {
-            tasks = storage.load();
-        } catch (IOException e) {
-            ui.showLoadingError();
-            tasks = new TaskList();
-        }
-
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
-            CommandType commandType = parser.parse(command);
+            CommandType commandType = jelly.parser.parse(command);
+
+            if (commandType == CommandType.BYE) {
+                jelly.ui.showBye();
+                break;
+            }
 
             try {
-                if (commandType == CommandType.BYE) {
-                    ui.showBye();
-                    break;
-
-                } else if (commandType == CommandType.LIST) {
-                    ui.showTaskList(tasks);
-
-                } else if (commandType == CommandType.FIND) {
-                    String keyword = argumentAfter(command, FIND_COMMAND);
-                    if (keyword.isEmpty()) {
-                        throw new JellyException("Please enter a keyword to find.");
-                    }
-                    ui.showMatchingTasks(tasks, keyword);
-
-                } else if ((commandType == CommandType.MARK || commandType == CommandType.UNMARK)
-                        && (command.equals("mark") || command.equals("unmark"))) {
-                    throw new JellyException("Please enter a valid task number.");
-
-                } else if (commandType == CommandType.MARK) {
-                    int taskNumber = parseTaskNumber(argumentAfter(command, MARK_COMMAND), tasks);
-
-                    tasks.getTask(taskNumber - 1).markAsDone();
-                    saveCliTasks(storage, tasks, ui);
-
-                    System.out.println("Nice! Jelly has marked this task as done~");
-                    System.out.println("   [X] " + tasks.getTask(taskNumber - 1).getDescription());
-
-                } else if (commandType == CommandType.UNMARK) {
-                    int taskNumber = parseTaskNumber(argumentAfter(command, UNMARK_COMMAND), tasks);
-
-                    tasks.getTask(taskNumber - 1).markAsNotDone();
-                    saveCliTasks(storage, tasks, ui);
-
-                    System.out.println("Ok, Jelly has marked this task as not done yet~");
-                    System.out.println("   [ ] " + tasks.getTask(taskNumber - 1).getDescription());
-
-                } else if (commandType == CommandType.TODO) {
-                    String description = argumentAfter(command, TODO_COMMAND);
-
-                    if (description.isEmpty()) {
-                        throw new JellyException("A Jelly to-do description cannot be empty!");
-                    }
-
-
-                    Todo todo = new Todo(description);
-                    tasks.addTask(todo);
-                    saveCliTasks(storage, tasks, ui);
-
-                    System.out.println("Got it! Jelly has added this task as a to-do:");
-                    System.out.println("   " + todo);
-                    System.out.println("\nNow you have " + tasks.size() + " tasks in your Jelly list~");
-
-                } else if (commandType == CommandType.DEADLINE) {
-                    if (!command.startsWith("deadline ")) {
-                        throw new JellyException("A Jelly deadline needs a description and a /by date.");
-                    }
-
-                    String input = argumentAfter(command, DEADLINE_COMMAND);
-                    String[] parts = input.split(" /by ", 2);
-
-                    if (parts.length < 2
-                            || parts[0].trim().isEmpty()
-                            || parts[1].trim().isEmpty()) {
-                        throw new JellyException(
-                                "Use: deadline <description> /by yyyy-mm-dd HHmm");
-                    }
-
-                    String description = parts[0].trim();
-                    String by = parts[1].trim();
-                    LocalDateTime dateTime;
-                    try {
-                        dateTime = DateTimeParser.parse(by);
-                    } catch (DateTimeParseException e) {
-                        throw new JellyException(
-                                "Use a deadline date in the format yyyy-MM-dd HHmm, e.g. 2019-12-02 1800.");
-                    }
-
-                    Deadline deadline = new Deadline(description, dateTime);
-                    tasks.addTask(deadline);
-                    saveCliTasks(storage, tasks, ui);
-
-                    System.out.println("Got it! Jelly has added this task as a deadline:");
-                    System.out.println("   " + deadline);
-                    System.out.println("\nNow you have " + tasks.size() + " tasks in your Jelly list~");
-
-                } else if (commandType == CommandType.EVENT) {
-                    if (!command.startsWith("event ")) {
-                        throw new JellyException("A Jelly event needs a description, start time, and end time.");
-                    }
-
-                    String input = argumentAfter(command, EVENT_COMMAND);
-                    String[] parts = input.split(" /from ", 2);
-
-                    if (parts.length < 2 || parts[0].trim().isEmpty()) {
-                        throw new JellyException(
-                                "Use: event <description> /from yyyy-mm-dd HHmm /to yyyy-mm-dd HHmm");
-                    }
-
-                    String[] times = parts[1].split(" /to ", 2);
-
-                    if (times.length < 2
-                            || times[0].trim().isEmpty()
-                            || times[1].trim().isEmpty()) {
-                        throw new JellyException(
-                                "Use: event <description> /from yyyy-mm-dd HHmm /to yyyy-mm-dd HHmm");
-                    }
-
-                    String description = parts[0].trim();
-                    String from = times[0].trim();
-                    String to = times[1].trim();
-
-                    LocalDateTime dateTimeFrom;
-                    LocalDateTime dateTimeTo;
-
-                    try {
-                        dateTimeFrom = DateTimeParser.parse(from);
-                        dateTimeTo = DateTimeParser.parse(to);
-                    } catch (DateTimeParseException e) {
-                        throw new JellyException(
-                                "Use event dates in the format yyyy-MM-dd HHmm, e.g. 2019-12-02 1800.");
-                    }
-
-                    if (dateTimeTo.isBefore(dateTimeFrom)) {
-                        throw new JellyException("An event's end time cannot be before its start time.");
-                    }
-
-                    Event event = new Event(description, dateTimeFrom, dateTimeTo);
-                    tasks.addTask(event);
-                    saveCliTasks(storage, tasks, ui);
-
-                    System.out.println("Got it! Jelly has added this task as an event:");
-                    System.out.println("   " + event);
-                    System.out.println("\nNow you have " + tasks.size() + " tasks in your Jelly list~");
-
-                } else if (commandType == CommandType.DELETE && command.equals("delete")) {
-
-                    throw new JellyException("Please enter a task number to delete.");
-
-                } else if (commandType == CommandType.DELETE) {
-                    int taskNumber = parseTaskNumber(argumentAfter(command, DELETE_COMMAND), tasks);
-
-                    Task deletedTask = tasks.deleteTask(taskNumber - 1);
-                    try {
-                        storage.save(tasks);
-                    } catch (IOException e) {
-                        System.out.println("Jelly could not save your tasks.");
-                    }
-
-                    System.out.println("Congrats! Jelly has removed this task for you :)");
-                    System.out.println(deletedTask);
-                    System.out.println("Now you have " + tasks.size() + " tasks in your Jelly list~");
-
+                String result = jelly.computeCommandResult(command);
+                if (commandType == CommandType.FIND) {
+                    jelly.ui.showWrapped(result);
                 } else {
-                    throw new JellyException("Yikes! Jelly doesn't recognize that command. Try again~");
+                    System.out.println(result);
                 }
             } catch (JellyException e) {
-                ui.showError(e.getMessage());
+                jelly.ui.showError(e.getMessage());
             }
-        }
-
-    }
-
-    /** Saves tasks for the CLI and reports persistence failures to the user. */
-    private static void saveCliTasks(Storage storage, TaskList tasks, Ui ui) {
-        try {
-            storage.save(tasks);
-        } catch (IOException e) {
-            ui.showSavingError();
         }
     }
 
@@ -254,33 +97,47 @@ public class Jelly {
      * @return the response that should be displayed.
      */
     public String executeCommand(String command) {
-        CommandType commandType = parser.parse(command);
-
         try {
-            switch (commandType) {
-                case LIST:
-                    return ui.formatTaskList(tasks);
-                case TODO:
-                    return executeTodoCommand(command);
-                case FIND:
-                    return executeFindCommand(command);
-                case MARK:
-                    return executeMarkCommand(command, true);
-                case UNMARK:
-                    return executeMarkCommand(command, false);
-                case DELETE:
-                    return executeDeleteCommand(command);
-                case DEADLINE:
-                    return executeDeadlineCommand(command);
-                case EVENT:
-                    return executeEventCommand(command);
-                case BYE:
-                    return "Bye! Stay jiggly~";
-                default:
-                    throw new JellyException("Yikes! Jelly doesn't recognize that command. Try again~");
-            }
+            return computeCommandResult(command);
         } catch (JellyException e) {
             return e.getMessage();
+        }
+    }
+
+    /**
+     * Dispatches one command to the matching handler and returns its plain-text result.
+     *
+     * <p>The result carries no CLI- or GUI-specific decoration (e.g. separator lines);
+     * callers apply whatever presentation their interface needs.
+     *
+     * @param command the command to process.
+     * @return the plain-text result of running the command.
+     * @throws JellyException if the command is invalid or fails validation.
+     */
+    private String computeCommandResult(String command) throws JellyException {
+        CommandType commandType = parser.parse(command);
+
+        switch (commandType) {
+            case LIST:
+                return ui.formatTaskList(tasks);
+            case TODO:
+                return executeTodoCommand(command);
+            case FIND:
+                return executeFindCommand(command);
+            case MARK:
+                return executeMarkCommand(command, true);
+            case UNMARK:
+                return executeMarkCommand(command, false);
+            case DELETE:
+                return executeDeleteCommand(command);
+            case DEADLINE:
+                return executeDeadlineCommand(command);
+            case EVENT:
+                return executeEventCommand(command);
+            case BYE:
+                return "Bye! Stay jiggly~";
+            default:
+                throw new JellyException("Yikes! Jelly doesn't recognize that command. Try again~");
         }
     }
 

@@ -1,8 +1,5 @@
 package jelly.ui;
 
-import java.util.Locale;
-
-import jelly.model.Task;
 import jelly.model.TaskList;
 
 /** Handles Jelly's interaction with the command-line user. */
@@ -31,11 +28,6 @@ public class Ui {
         System.out.println("What can I do for you? :)");
     }
 
-    /** Prints the current tasks with their one-based list numbers. */
-    public void showTaskList(TaskList tasks) {
-        System.out.println(formatTaskList(tasks));
-    }
-
     /**
      * Formats the current tasks with their one-based list numbers.
      *
@@ -60,26 +52,17 @@ public class Ui {
         return output.toString();
     }
 
-    /** Prints tasks whose descriptions contain the supplied keyword. */
-    public void showMatchingTasks(TaskList tasks, String keyword) {
-        String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
-        System.out.println(MATCH_SEPARATOR);
-        System.out.println("Here are the matching tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.getTask(i);
-            String normalizedDescription = task.getDescription().toLowerCase(Locale.ROOT);
-            boolean isMatch = normalizedDescription.contains(normalizedKeyword);
-            if (isMatch) {
-                System.out.println((i + 1) + "." + task);
-            }
-        }
-        System.out.println(MATCH_SEPARATOR);
-    }
-
     /** Prints the standard formatted error message. */
     public void showError(String message) {
         System.out.println(MATCH_SEPARATOR);
         System.out.println(" " + message);
+        System.out.println(MATCH_SEPARATOR);
+    }
+
+    /** Prints the supplied content between separator lines, e.g. for find results. */
+    public void showWrapped(String content) {
+        System.out.println(MATCH_SEPARATOR);
+        System.out.println(content);
         System.out.println(MATCH_SEPARATOR);
     }
 
