@@ -27,6 +27,10 @@ public class Parser {
             return CommandType.DELETE;
         } else if (matchesCommand(command, "find")) {
             return CommandType.FIND;
+        } else if (matchesCommand(command, "tag")) {
+            return CommandType.TAG;
+        } else if (matchesCommand(command, "untag")) {
+            return CommandType.UNTAG;
         }
         return CommandType.INVALID;
     }

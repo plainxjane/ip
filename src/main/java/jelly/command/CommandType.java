@@ -10,6 +10,8 @@ public enum CommandType {
     UNMARK,
     DELETE,
     FIND,
+    TAG,
+    UNTAG,
     BYE,
     INVALID
 }
