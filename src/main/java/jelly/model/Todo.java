@@ -14,9 +14,8 @@ public class Todo extends Task {
         super(description);
     }
 
-    /** Returns the display form of this to-do task. */
     @Override
-    public String toString() {
-        return "[T]" + super.toString();
+    protected String getTaskType() {
+        return "T";
     }
 }

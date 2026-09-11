@@ -81,10 +81,40 @@ public class Task {
         return this.tag != null;
     }
 
+    /**
+     * Returns formatted tag if task has one.
+     *
+     * @return the formatted tag, or an empty string if no tag exists.
+     */
+    private String getTagDisplay() {
+        return hasTag() ? "   {#" + tag + "}" : "";
+    }
+
+    /**
+     * Returns the task type.
+     *
+     * @return the task type.
+     */
+    protected String getTaskType() {
+        return "";
+    }
+
+    /**
+     * Returns the task details.
+     *
+     * @return the task details.
+     */
+    protected String getTaskDetails() {
+        return "";
+    }
+
     /** Returns the display form of this task. */
     @Override
     public String toString() {
-        return "[" + this.getStatusIcon() + "] " +
-                this.getDescription() + "{# " + this.tag + "}";
+        return "[" + getTaskType() + "]"
+                + "[" + getStatusIcon() + "] "
+                + getDescription()
+                + getTaskDetails()
+                + getTagDisplay();
     }
 }
