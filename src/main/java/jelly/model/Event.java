@@ -38,10 +38,14 @@ public class Event extends Task {
         return this.to;
     }
 
-    /** Returns the display form of this event task. */
     @Override
-    public String toString() {
-        return "[E]" + super.toString() + " (from: " + this.from.format(DISPLAY_FORMAT) + " to: "
-                + this.to.format(DISPLAY_FORMAT) + ")";
+    protected String getTaskType() {
+        return "E";
+    }
+
+    @Override
+    protected String getTaskDetails() {
+        return " (from: " + this.from.format(DISPLAY_FORMAT)
+                + " to: " + this.to.format(DISPLAY_FORMAT) + ")";
     }
 }

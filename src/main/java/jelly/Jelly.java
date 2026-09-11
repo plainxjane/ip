@@ -314,7 +314,7 @@ public class Jelly {
             throw new JellyException("Tags may contain only letters, numbers, '-' and '_'.");
         }
 
-        Task task = tasks.getTask(taskNumber);
+        Task task = tasks.getTask(taskNumber - 1);
         task.setTag(tag);
         saveTasks();
 
@@ -336,7 +336,7 @@ public class Jelly {
         }
 
         int taskNumber = parseTaskNumber(arguments);
-        Task task = tasks.getTask(taskNumber);
+        Task task = tasks.getTask(taskNumber - 1);
         task.removeTag();
         saveTasks();
 

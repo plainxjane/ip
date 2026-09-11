@@ -29,9 +29,13 @@ public class Deadline extends Task {
         return this.by;
     }
 
-    /** Returns the display form of this deadline task. */
     @Override
-    public String toString() {
-        return "[D]" + super.toString() + " (by: " + this.by.format(DISPLAY_FORMAT) + ")";
+    protected String getTaskType() {
+        return "D";
+    }
+
+    @Override
+    protected String getTaskDetails() {
+        return " (by: " + this.by.format(DISPLAY_FORMAT) + ")";
     }
 }

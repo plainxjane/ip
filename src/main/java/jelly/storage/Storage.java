@@ -73,6 +73,12 @@ public class Storage {
             task.markAsDone();
         }
 
+        // the tag is stored as the final field when present.
+        if (parts.length >= expectedFieldCount(parts[0])
+                && !parts[parts.length - 1].isBlank()) {
+            task.setTag(parts[parts.length - 1]);
+        }
+
         return task;
     }
 
@@ -113,19 +119,52 @@ public class Storage {
     /** Formats one task as a storage line, or returns {@code null} if its type is unrecognized. */
     private static String formatLine(Task task) {
         if (task instanceof Todo) {
-            return TODO_TYPE + " | " + statusFor(task) + task.getDescription();
+            return TODO_TYPE + " | " + statusFor(task)
+                    + task.getDescription()
+                    + " | " + tagFor(task);
         } else if (task instanceof Deadline deadline) {
-            return DEADLINE_TYPE + " | " + statusFor(task) + task.getDescription()
-                    + " | " + deadline.getBy();
+            return DEADLINE_TYPE + " | " + statusFor(task)
+                    + task.getDescription()
+                    + " | " + deadline.getBy()
+                    + " | " + tagFor(task);
         } else if (task instanceof Event event) {
-            return EVENT_TYPE + " | " + statusFor(task) + task.getDescription()
-                    + " | " + event.getFrom() + " | " + event.getTo();
+            return EVENT_TYPE + " | " + statusFor(task)
+                    + task.getDescription()
+                    + " | " + event.getFrom()
+                    + " | " + event.getTo()
+                    + " | " + tagFor(task);
         }
         return null;
+    }
+
+    /**
+     * Returns the task tag for storage.
+     *
+     * @param task the task whose tag should be serialized.
+     * @return the tag, or an empty string if the task has no tag.
+     */
+    private static String tagFor(Task task) {
+        return task.hasTag() ? task.getTag() : "";
     }
 
     /** Returns the serialized completion status and its field separator. */
     private static String statusFor(Task task) {
         return (task.isDone() ? DONE_STATUS : NOT_DONE_STATUS) + " | ";
+    }
+
+    /**
+     * Returns the minimum number of fields expected for a task type.
+     *
+     * @param type the task type code.
+     * @return the minimum number of serialized fields.
+     */
+    private static int expectedFieldCount(String type) {
+        return switch (type) {
+            case TODO_TYPE -> 4;
+            case DEADLINE_TYPE -> 5;
+            case EVENT_TYPE -> 6;
+            default -> Integer.MAX_VALUE;
+        };
+
     }
 }
