@@ -12,6 +12,10 @@ public class Task {
      * Whether the task has been completed.
      */
     private boolean isDone;
+    /**
+     * The optional tag attached to this task.
+     */
+    private String tag;
 
     /**
      * Creates an incomplete task.
@@ -21,6 +25,7 @@ public class Task {
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+        this.tag = null;
     }
 
     /** Marks this task as completed. */
@@ -48,9 +53,38 @@ public class Task {
         return this.isDone;
     }
 
+    /**
+     * Adds a tag to this task.
+     *
+     * @param tag the tag to assign, without the {@code #} symbol
+     */
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    /** Removes tag from this task. */
+    public void removeTag() {
+        this.tag = null;
+    }
+
+    /** Returns the tag associated with this task. */
+    public String getTag() {
+        return this.tag;
+    }
+
+    /**
+     * Checks if this task has a tag.
+     *
+     * @return true if this task has a tag.
+     */
+    public boolean hasTag() {
+        return this.tag != null;
+    }
+
     /** Returns the display form of this task. */
     @Override
     public String toString() {
-        return "[" + this.getStatusIcon() + "] " + this.getDescription();
+        return "[" + this.getStatusIcon() + "] " +
+                this.getDescription() + "{# " + this.tag + "}";
     }
 }

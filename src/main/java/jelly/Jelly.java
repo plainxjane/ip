@@ -27,6 +27,8 @@ public class Jelly {
     private static final String UNMARK_COMMAND = "unmark";
     private static final String DELETE_COMMAND = "delete";
     private static final String FIND_COMMAND = "find";
+    private static final String TAG_COMMAND = "tag";
+    private static final String UNTAG_COMMAND = "untag";
 
     private final TaskList tasks;
     private final Storage storage;
@@ -100,6 +102,10 @@ public class Jelly {
                     return executeDeadlineCommand(command);
                 case EVENT:
                     return executeEventCommand(command);
+                case TAG:
+                    return executeTagCommand(command);
+                case UNTAG:
+                    return executeUntagCommand(command);
                 case BYE:
                     return Ui.BYE_MESSAGE;
                 default:
@@ -280,6 +286,61 @@ public class Jelly {
         } catch (IOException e) {
             // The command is still completed in memory; the next save can retry.
         }
+    }
+
+    /**
+     * Assigns a tag to a task.
+     *
+     * @param command the complete tag command.
+     * @return a confirmation message.
+     * @throws JellyException if the task number is invalid.
+     */
+    private String executeTagCommand(String command) throws JellyException {
+        String arguments = argumentAfter(command, TAG_COMMAND);
+
+        if (arguments.isBlank()) {
+            throw new JellyException("Use: tag <task number> <tag>");
+        }
+
+        String parts[] = arguments.split("\\s+", 2);
+        if (parts.length < 2 || parts[1].isBlank()) {
+            throw new JellyException("Use: tag <task number> <tag>");
+        }
+
+        int taskNumber = parseTaskNumber(parts[0]);
+        String tag = parts[1].trim();
+
+        if (!tag.matches("[A-Za-z0-9_-]+")) {
+            throw new JellyException("Tags may contain only letters, numbers, '-' and '_'.");
+        }
+
+        Task task = tasks.getTask(taskNumber);
+        task.setTag(tag);
+        saveTasks();
+
+        return "Jelly has tagged your task as #" + tag + ":\n " + task;
+    }
+
+    /**
+     * Removes a tag from a task.
+     *
+     * @param command the complete untag command.
+     * @return the response to display.
+     * @throws JellyException if the task number is invalid.
+     */
+    private String executeUntagCommand(String command) throws JellyException {
+        String arguments = argumentAfter(command, UNTAG_COMMAND);
+
+        if (arguments.isBlank()) {
+            throw new JellyException("Use: untag <task number>");
+        }
+
+        int taskNumber = parseTaskNumber(arguments);
+        Task task = tasks.getTask(taskNumber);
+        task.removeTag();
+        saveTasks();
+
+        return "Jelly has removed the tag from this task:\n " + task;
     }
 
 }
