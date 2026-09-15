@@ -29,7 +29,7 @@ public class Main extends Application {
 
             MainWindow controller = loader.getController();
             Image userImage = new Image(
-                    getClass().getResourceAsStream("/images/kuromi.jpg"));
+                    getClass().getResourceAsStream("/images/hk.png"));
             Image jellyImage = new Image(
                     getClass().getResourceAsStream("/images/hangyodon.png"));
 

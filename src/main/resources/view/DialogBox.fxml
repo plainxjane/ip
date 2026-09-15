@@ -19,8 +19,8 @@
                style="-fx-padding: 12 16 12 16;"
                wrapText="true" />
         <ImageView fx:id="displayPicture"
-                   fitHeight="30.0"
-                   fitWidth="30.0"
+                   fitHeight="44.0"
+                   fitWidth="44.0"
                    pickOnBounds="true"
                    preserveRatio="true" />
     </children>
