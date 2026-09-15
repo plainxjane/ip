@@ -1,0 +1,64 @@
+.root {
+    -fx-font-family: "System";
+    -fx-background-color: #f7f7fb;
+}
+
+.scroll-pane, .scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-padding: 8 4 4 4;
+}
+
+.message-row {
+    -fx-padding: 6 10;
+}
+
+.message-row .label {
+    -fx-padding: 11 16;
+    -fx-font-size: 13px;
+    -fx-text-fill: #24242b;
+}
+
+.user-message .label {
+    -fx-background-color: #d9e9ff;
+    -fx-background-radius: 14 14 3 14;
+}
+
+.jelly-message .label {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 14 14 14 3;
+    -fx-border-color: #e1e1ea;
+    -fx-border-radius: 14 14 14 3;
+}
+
+.error-message .label {
+    -fx-background-color: #fff0f0;
+    -fx-border-color: #e06b6b;
+    -fx-text-fill: #9d2020;
+}
+
+#inputBar {
+    -fx-padding: 10 12 12 12;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e1e1ea;
+    -fx-border-width: 1 0 0 0;
+}
+
+#inputField {
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-padding: 8 12;
+}
+
+.button {
+    -fx-background-color: #536dfe;
+    -fx-background-radius: 16;
+    -fx-text-fill: white;
+    -fx-padding: 8 16;
+}
+
+.button:hover {
+    -fx-background-color: #4058df;
+}

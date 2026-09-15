@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /** Controls the main Jelly window defined in MainWindow.fxml. */
@@ -26,7 +27,7 @@ public class MainWindow {
     /** Configures controls after FXML has injected them. */
     @FXML
     private void initialize() {
-        messageArea.setPadding(new Insets(10));
+        messageArea.setPadding(new Insets(12));
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         messageArea.heightProperty().addListener((observable,
@@ -63,7 +64,11 @@ public class MainWindow {
 
         messageArea.getChildren().add(DialogBox.getUserDialog(input, userImage));
         String response = jelly.executeCommand(input);
-        messageArea.getChildren().add(DialogBox.getJellyDialog(response, jellyImage));
+        DialogBox responseDialog = DialogBox.getJellyDialog(response, jellyImage);
+        if (jelly.wasLastResponseAnError()) {
+            responseDialog.getStyleClass().add("error-message");
+        }
+        messageArea.getChildren().add(responseDialog);
         inputField.clear();
     }
 }

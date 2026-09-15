@@ -64,7 +64,9 @@ public class DialogBox extends HBox {
      * @return a user-styled dialog box.
      */
     public static DialogBox getUserDialog(String message, Image image) {
-        return new DialogBox(message, image);
+        DialogBox dialogBox = new DialogBox(message, image);
+        dialogBox.getStyleClass().add("user-message");
+        return dialogBox;
     }
 
     /**
@@ -77,6 +79,7 @@ public class DialogBox extends HBox {
     public static DialogBox getJellyDialog(String message, Image image) {
         DialogBox dialogBox = new DialogBox(message, image);
         dialogBox.flip();
+        dialogBox.getStyleClass().add("jelly-message");
         return dialogBox;
     }
 }

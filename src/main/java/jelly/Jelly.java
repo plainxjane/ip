@@ -34,6 +34,7 @@ public class Jelly {
     private final Storage storage;
     private final Parser parser;
     private final Ui ui;
+    private boolean lastResponseWasError;
 
     /**
      * Creates a Jelly instance and loads its saved tasks.
@@ -82,6 +83,7 @@ public class Jelly {
      * @return the response that should be displayed.
      */
     public String executeCommand(String command) {
+        lastResponseWasError = false;
         CommandType commandType = parser.parse(command);
 
         try {
@@ -112,8 +114,14 @@ public class Jelly {
                     throw new JellyException("Yikes! Jelly doesn't recognize that command. Try again~");
             }
         } catch (JellyException e) {
+            lastResponseWasError = true;
             return e.getMessage();
         }
+    }
+
+    /** Returns whether the most recently executed command produced an error. */
+    public boolean wasLastResponseAnError() {
+        return lastResponseWasError;
     }
 
     /**
@@ -282,7 +290,7 @@ public class Jelly {
     /** Saves the current task list. */
     private void saveTasks() {
         try {
-            storage.save(tasks);
+            storage.save( tasks);
         } catch (IOException e) {
             // The command is still completed in memory; the next save can retry.
         }
@@ -302,7 +310,7 @@ public class Jelly {
             throw new JellyException("Use: tag <task number> <tag>");
         }
 
-        String parts[] = arguments.split("\\s+", 2);
+        String[] parts = arguments.split("\\s+", 2);
         if (parts.length < 2 || parts[1].isBlank()) {
             throw new JellyException("Use: tag <task number> <tag>");
         }

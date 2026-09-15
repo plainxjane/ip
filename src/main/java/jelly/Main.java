@@ -24,6 +24,8 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/view/MainWindow.fxml"));
             Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add(
+                    getClass().getResource("/view/jelly.css").toExternalForm());
 
             MainWindow controller = loader.getController();
             Image userImage = new Image(
