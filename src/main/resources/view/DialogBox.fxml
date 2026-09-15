@@ -9,6 +9,7 @@
          alignment="TOP_RIGHT"
          maxWidth="1.7976931348623157E308"
          fillHeight="false"
+         maxHeight="1.7976931348623157E308"
          spacing="10.0"
          xmlns="http://javafx.com/javafx/17"
          xmlns:fx="http://javafx.com/fxml/1">
