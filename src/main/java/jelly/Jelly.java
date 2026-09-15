@@ -111,7 +111,7 @@ public class Jelly {
                 case BYE:
                     return Ui.BYE_MESSAGE;
                 default:
-                    throw new JellyException("Yikes! Jelly doesn't recognize that command. Try again~");
+                    throw new JellyException("Jelly doesn't recognize your command. Try again~");
             }
         } catch (JellyException e) {
             lastResponseWasError = true;
@@ -135,18 +135,18 @@ public class Jelly {
         String description = argumentAfter(command, TODO_COMMAND);
 
         if (description.isEmpty()) {
-            throw new JellyException("A Jelly to-do description cannot be empty!");
+            throw new JellyException("Jelly needs a task to stick to the jar!");
         }
 
         Todo todo = new Todo(description);
         tasks.addTask(todo);
 
         StringBuilder response = new StringBuilder();
-        response.append("Got it! Jelly has added this task as a to-do:\n");
+        response.append("Boop! This task is now stuck to your jar:\n");
         response.append("   ").append(todo);
         response.append("\n\nNow you have ")
                 .append(tasks.size())
-                .append(" tasks in your Jelly list~");
+                .append(" tasks in your Jelly jar~");
 
         try {
             storage.save(tasks);
@@ -164,7 +164,7 @@ public class Jelly {
             throw new JellyException("Please enter a keyword to find.");
         }
 
-        StringBuilder response = new StringBuilder("Here are the matching tasks in your list:\n");
+        StringBuilder response = new StringBuilder("Here are the tasks Jelly found in your jar:\n");
         for (int taskNumber : tasks.findMatchingTaskNumbers(keyword)) {
             response.append(taskNumber)
                     .append(".")
@@ -191,8 +191,8 @@ public class Jelly {
         saveTasks();
 
         String status = mark ? "[X]" : "[ ]";
-        String message = mark ? "Nice! Jelly has marked this task as done~"
-                : "Ok, Jelly has marked this task as not done yet~";
+        String message = mark ? "Nice wobble! Jelly marked this task as done~"
+                : "No wobble—Jelly marked this task as not done yet~";
         return message + "\n   " + status + " " + task.getDescription();
     }
 
@@ -205,8 +205,8 @@ public class Jelly {
         int taskNumber = parseTaskNumber(argumentAfter(command, DELETE_COMMAND));
         Task deletedTask = tasks.deleteTask(taskNumber - 1);
         saveTasks();
-        return "Congrats! Jelly has removed this task for you :)\n" + deletedTask
-                + "\nNow you have " + tasks.size() + " tasks in your Jelly list~";
+        return "Splat! Jelly removed that task from the jar :)\n" + deletedTask
+                + "\nNow you have " + tasks.size() + " tasks in your Jelly jar~";
     }
 
     /** Creates and saves a deadline task. */
@@ -225,8 +225,8 @@ public class Jelly {
         Deadline deadline = new Deadline(parts[0].trim(), dateTime);
         tasks.addTask(deadline);
         saveTasks();
-        return "Got it! Jelly has added this task as a deadline:\n   " + deadline
-                + "\n\nNow you have " + tasks.size() + " tasks in your Jelly list~";
+        return "Boop! This deadline is now stuck to your jar:\n   " + deadline
+                + "\n\nNow you have " + tasks.size() + " tasks in your Jelly jar~";
     }
 
     /** Creates and saves an event task. */
@@ -255,8 +255,8 @@ public class Jelly {
         Event event = new Event(parts[0].trim(), from, to);
         tasks.addTask(event);
         saveTasks();
-        return "Got it! Jelly has added this task as an event:\n   " + event
-                + "\n\nNow you have " + tasks.size() + " tasks in your Jelly list~";
+        return "Boop! This event is now tucked into your jar:\n   " + event
+                + "\n\nNow you have " + tasks.size() + " tasks in your Jelly jar~";
     }
 
     /** Parses and validates a one-based task number against the current task list. */
@@ -269,7 +269,7 @@ public class Jelly {
             assert taskNumber >= 1 && taskNumber <= tasks.size() : "Task number must refer to an existing task";
             return taskNumber;
         } catch (NumberFormatException e) {
-            throw new JellyException("Please enter a valid task number.");
+            throw new JellyException("Jelly needs a valid task number to wobble with.");
         }
     }
 

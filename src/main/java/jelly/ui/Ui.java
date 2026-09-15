@@ -7,9 +7,6 @@ public class Ui {
     /** Jelly's farewell message, shared with {@code Jelly#computeCommandResult} for the GUI. */
     public static final String BYE_MESSAGE = "Bye! Stay jiggly~";
 
-    /** Separates the task-list heading, entries, and footer. */
-    private static final String TASK_SEPARATOR = "----------------------------------------------------";
-
     /** Prints Jelly's greeting and prompt. */
     public void showWelcome() {
         String banner = "╭──────────────────────╮\n"
@@ -25,7 +22,7 @@ public class Ui {
 
         System.out.println(banner);
         System.out.println("\nHello! I'm Jelly, your squishy little assistant!");
-        System.out.println("What can I do for you? :)");
+        System.out.println("Let's make your tasks stick! :)");
     }
 
     /**
@@ -37,8 +34,7 @@ public class Ui {
     public String formatTaskList(TaskList tasks) {
         StringBuilder output = new StringBuilder();
 
-        output.append("Your Jelly Tasks :)\n");
-        output.append(TASK_SEPARATOR).append("\n");
+        output.append("Your Jelly Jar :)\n\n");
 
         for (int i = 0; i < tasks.size(); i++) {
             output.append(i + 1)
@@ -47,37 +43,31 @@ public class Ui {
                     .append("\n");
         }
 
-        output.append(TASK_SEPARATOR);
-
         return output.toString();
     }
 
     /** Prints tasks whose descriptions contain the supplied keyword. */
     public void showMatchingTasks(TaskList tasks, String keyword) {
-        System.out.println(TASK_SEPARATOR);
-        System.out.println("Here are the matching tasks in your list:");
+        System.out.println("Here are the tasks Jelly found in your jar:");
         for (int taskNumber : tasks.findMatchingTaskNumbers(keyword)) {
             System.out.println(taskNumber + "." + tasks.getTask(taskNumber - 1));
         }
-        System.out.println(TASK_SEPARATOR);
     }
 
     /** Prints the standard formatted error message. */
     public void showError(String message) {
-        System.out.println(TASK_SEPARATOR);
         System.out.println(" " + message);
-        System.out.println(TASK_SEPARATOR);
     }
 
     /** Prints the message used when loading saved tasks fails. */
     public void showLoadingError() {
-        System.out.println("Jelly could not load your saved tasks.");
-        System.out.println("Jelly will start with an empty task list~");
+        System.out.println("Jelly couldn't find your saved tasks.");
+        System.out.println("Your jar is empty for now—let's add something useful!");
     }
 
     /** Prints the message used when saving tasks fails. */
     public void showSavingError() {
-        System.out.println("Jelly could not save your tasks.");
+        System.out.println("Jelly couldn't seal your tasks in the jar.");
     }
 
     /** Prints Jelly's farewell. */

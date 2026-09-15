@@ -38,33 +38,33 @@ bye
 ╰──────────────────────╯
 
 Hello! I'm Jelly, your squishy little assistant!
-What can I do for you? :)
-Got it! Jelly has added this task as a to-do:
+Let's make your tasks stick! :)
+Boop! This task is now stuck to your jar:
    [T][ ] buy milk
 
-Now you have 1 tasks in your Jelly list~
-Got it! Jelly has added this task as a deadline:
+Now you have 1 tasks in your Jelly jar~
+Boop! This deadline is now stuck to your jar:
    [D][ ] submit report (by: Dec 02 2019 18:00)
 
-Now you have 2 tasks in your Jelly list~
-Got it! Jelly has added this task as an event:
+Now you have 2 tasks in your Jelly jar~
+Boop! This event is now tucked into your jar:
    [E][ ] team meeting (from: Dec 02 2019 10:00 to: Dec 02 2019 11:00)
 
-Now you have 3 tasks in your Jelly list~
-Yikes! Jelly doesn't recognize that command. Try again~
-Nice! Jelly has marked this task as done~
+Now you have 3 tasks in your Jelly jar~
+Jelly is a little wobbly there. Try again~
+Nice wobble! Jelly marked this task as done~
    [X] buy milk
-Ok, Jelly has marked this task as not done yet~
+No wobble—Jelly marked this task as not done yet~
    [ ] buy milk
-Congrats! Jelly has removed this task for you :)
+Splat! Jelly removed that task from the jar :)
 [D][ ] submit report (by: Dec 02 2019 18:00)
-Now you have 2 tasks in your Jelly list~
-Your Jelly Tasks :)
-----------------------------------------------------------
+Now you have 2 tasks in your Jelly jar~
+Your Jelly Jar :)
+
 1.[T][ ] buy milk
 2.[E][ ] team meeting (from: Dec 02 2019 10:00 to: Dec 02 2019 11:00)
-----------------------------------------------------------
-Here are the matching tasks in your list:
+
+Here are the tasks Jelly found in your jar:
 1.[T][ ] buy milk
 Bye! Stay jiggly~
 ```
@@ -95,11 +95,11 @@ bye
 ╰──────────────────────╯
 
 Hello! I'm Jelly, your squishy little assistant!
-What can I do for you? :)
-Your Jelly Tasks :)
-----------------------------------------------------------
+Let's make your tasks stick! :)
+Your Jelly Jar :)
+
 1.[T][ ] buy milk
 2.[E][ ] team meeting (from: Dec 02 2019 10:00 to: Dec 02 2019 11:00)
-----------------------------------------------------------
+
 Bye! Stay jiggly~
 ```
