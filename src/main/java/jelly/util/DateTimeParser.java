@@ -2,7 +2,6 @@ package jelly.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 
 /** Converts user-entered date/time text into date-times. */

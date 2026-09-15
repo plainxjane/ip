@@ -30,7 +30,12 @@ public class Storage {
 
     /** Creates storage using a default data file. */
     public Storage() {
-        this.filePath = Path.of("data", "jelly.txt");
+        this(Path.of("data", "jelly.txt"));
+    }
+
+    /** Creates storage using the supplied data file. */
+    public Storage(Path filePath) {
+        this.filePath = filePath;
     }
 
     /**
