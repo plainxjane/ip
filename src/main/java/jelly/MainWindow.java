@@ -1,5 +1,6 @@
 package jelly;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
@@ -23,6 +24,7 @@ public class MainWindow {
     private Jelly jelly;
     private Image userImage;
     private Image jellyImage;
+    private boolean shouldAutoScroll;
 
     /** Configures controls after FXML has injected them. */
     @FXML
@@ -30,8 +32,6 @@ public class MainWindow {
         messageArea.setPadding(new Insets(12));
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        messageArea.heightProperty().addListener((observable,
-                                                  oldHeight, newHeight) -> scrollPane.setVvalue(1.0));
     }
 
     /**
@@ -62,6 +62,7 @@ public class MainWindow {
             return;
         }
 
+        shouldAutoScroll = isNearBottom();
         messageArea.getChildren().add(DialogBox.getUserDialog(input, userImage));
         String response = jelly.executeCommand(input);
         DialogBox responseDialog = DialogBox.getJellyDialog(response, jellyImage);
@@ -70,5 +71,16 @@ public class MainWindow {
         }
         messageArea.getChildren().add(responseDialog);
         inputField.clear();
+
+        if (shouldAutoScroll) {
+            Platform.runLater(() -> scrollPane.setVvalue(1.0));
+        }
+    }
+
+    /** Returns whether the conversation is already positioned near its latest message. */
+    private boolean isNearBottom() {
+        double contentHeight = messageArea.getBoundsInLocal().getHeight();
+        double viewportHeight = scrollPane.getViewportBounds().getHeight();
+        return contentHeight <= viewportHeight || scrollPane.getVvalue() >= 0.95;
     }
 }
