@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 /**
  * A reusable JavaFX component for displaying one conversation message.
@@ -44,6 +45,7 @@ public class DialogBox extends HBox {
 
         text.setText(message);
         displayPicture.setImage(image);
+        HBox.setHgrow(text, Priority.ALWAYS);
     }
 
     /**

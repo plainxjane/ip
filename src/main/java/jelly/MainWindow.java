@@ -30,6 +30,7 @@ public class MainWindow {
     @FXML
     private void initialize() {
         messageArea.setPadding(new Insets(12));
+        messageArea.setFillWidth(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     }
