@@ -23,6 +23,9 @@ public class Task {
      * @param description the text describing the task.
      */
     public Task(String description) {
+        if (description == null || description.isBlank() || description.contains(" | ")) {
+            throw new IllegalArgumentException("Task description must be non-blank and cannot contain ' | '.");
+        }
         this.description = description;
         this.isDone = false;
         this.tag = null;
@@ -59,6 +62,9 @@ public class Task {
      * @param tag the tag to assign, without the {@code #} symbol
      */
     public void setTag(String tag) {
+        if (tag == null || !tag.matches("[A-Za-z0-9_-]+")) {
+            throw new IllegalArgumentException("Invalid tag.");
+        }
         this.tag = tag;
     }
 

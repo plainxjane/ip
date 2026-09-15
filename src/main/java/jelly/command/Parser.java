@@ -9,6 +9,10 @@ public class Parser {
      * @return the recognized command type, or {@link CommandType#INVALID} if it is not recognized.
      */
     public CommandType parse(String command) {
+        if (command == null || command.isBlank() || !command.equals(command.trim())
+                || command.contains("  ")) {
+            return CommandType.INVALID;
+        }
         if (command.equals("bye")) {
             return CommandType.BYE;
         } else if (command.equals("list")) {

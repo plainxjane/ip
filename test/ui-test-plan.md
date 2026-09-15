@@ -4,6 +4,23 @@ The tests run in order. The first case creates and modifies the saved task
 list; the second case starts Jelly again and verifies that the saved state is
 loaded from disk.
 
+## Additional error-handling cases
+
+The following inputs must be rejected without changing the task count:
+
+```text
+ todo buy milk
+todo  buy milk
+event meeting /from 2026-02-30 1000 /to 2026-02-30 1100
+event meeting /from 2026-02-01 1000 /to 2026-02-01 1000
+todo valid task
+bye
+```
+
+The first two commands are rejected for invalid spacing. The next two are
+rejected for an impossible date and a non-positive event duration. Only the
+valid to-do is added.
+
 ## Test case: Create, modify, validate, and save tasks
 
 ### Aim
@@ -51,7 +68,7 @@ Boop! This event is now tucked into your jar:
    [E][ ] team meeting (from: Dec 02 2019 10:00 to: Dec 02 2019 11:00)
 
 Now you have 3 tasks in your Jelly jar~
-Jelly is a little wobbly there. Try again~
+Jelly doesn't recognize your command. Try again~
 Nice wobble! Jelly marked this task as done~
    [X] buy milk
 No wobble—Jelly marked this task as not done yet~

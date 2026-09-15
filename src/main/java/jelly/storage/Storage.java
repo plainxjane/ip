@@ -3,6 +3,7 @@ package jelly.storage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.DateTimeException;
 import java.util.ArrayList;
 
 import jelly.model.Deadline;
@@ -63,13 +64,20 @@ public class Storage {
             return null;
         }
 
-        Task task = createTask(parts[0], parts[2], parts);
+        Task task;
+        try {
+            task = createTask(parts[0], parts[2], parts);
+        } catch (DateTimeException | IllegalArgumentException exception) {
+            return null;
+        }
         if (task == null) {
             return null;
         }
 
-        boolean isDone = parts[1].equals(DONE_STATUS);
-        if (isDone) {
+        if (!parts[1].equals(DONE_STATUS) && !parts[1].equals(NOT_DONE_STATUS)) {
+            return null;
+        }
+        if (parts[1].equals(DONE_STATUS)) {
             task.markAsDone();
         }
 
@@ -87,9 +95,9 @@ public class Storage {
         if (type.equals(TODO_TYPE)) {
             return new Todo(description);
         } else if (type.equals(DEADLINE_TYPE) && parts.length >= 4) {
-            return new Deadline(description, DateTimeParser.parse(parts[3]));
+            return new Deadline(description, DateTimeParser.parseStored(parts[3]));
         } else if (type.equals(EVENT_TYPE) && parts.length >= 5) {
-            return new Event(description, DateTimeParser.parse(parts[3]), DateTimeParser.parse(parts[4]));
+            return new Event(description, DateTimeParser.parseStored(parts[3]), DateTimeParser.parseStored(parts[4]));
         }
         return null;
     }

@@ -248,8 +248,8 @@ public class Jelly {
                 "Use event dates in the format yyyy-MM-dd HHmm, e.g. 2019-12-02 1800.");
         LocalDateTime to = parseDate(times[1].trim(),
                 "Use event dates in the format yyyy-MM-dd HHmm, e.g. 2019-12-02 1800.");
-        if (to.isBefore(from)) {
-            throw new JellyException("An event's end time cannot be before its start time.");
+        if (!to.isAfter(from)) {
+            throw new JellyException("An event's end time must be after its start time.");
         }
 
         Event event = new Event(parts[0].trim(), from, to);
@@ -288,11 +288,11 @@ public class Jelly {
     }
 
     /** Saves the current task list. */
-    private void saveTasks() {
+    private void saveTasks() throws JellyException {
         try {
             storage.save( tasks);
         } catch (IOException e) {
-            // The command is still completed in memory; the next save can retry.
+            throw new JellyException("Jelly could not save your tasks. Please check access to data/jelly.txt.");
         }
     }
 

@@ -40,5 +40,9 @@ class ParserTest {
         assertEquals(CommandType.INVALID, parser.parse("deadlineSomething"));
         assertEquals(CommandType.INVALID, parser.parse("eventSomething"));
         assertEquals(CommandType.INVALID, parser.parse("findSomething"));
+        assertEquals(CommandType.INVALID, parser.parse(null));
+        assertEquals(CommandType.INVALID, parser.parse(" todo buy groceries"));
+        assertEquals(CommandType.INVALID, parser.parse("todo  buy groceries"));
+        assertEquals(CommandType.INVALID, parser.parse("todo buy groceries "));
     }
 }
