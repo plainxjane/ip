@@ -4,11 +4,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
 /** Tests task storage and list operations performed by {@link TaskList}. */
 class TaskListTest {
+
+    @Test
+    void constructors_rejectInvalidTaskData() {
+        assertThrows(IllegalArgumentException.class, () -> new Todo(" "));
+        assertThrows(IllegalArgumentException.class, () -> new Todo("bad | data"));
+        assertThrows(IllegalArgumentException.class, () -> new Deadline("task", null));
+        assertThrows(IllegalArgumentException.class, () -> new Event("task",
+                LocalDateTime.of(2026, 1, 1, 10, 0), LocalDateTime.of(2026, 1, 1, 10, 0)));
+    }
 
     @Test
     void addTask_taskIsAddedAndSizeIncreases() {

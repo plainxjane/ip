@@ -24,6 +24,9 @@ public class Event extends Task {
      */
     public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
+        if (from == null || to == null || !to.isAfter(from)) {
+            throw new IllegalArgumentException("Event end time must be after its start time.");
+        }
         this.from = from;
         this.to = to;
     }
