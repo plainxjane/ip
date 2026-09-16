@@ -1,30 +1,86 @@
-# Jelly project template
+# Jelly
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Jelly_. Given below are instructions on how to use it.
+Jelly is a Java task-management chatbot. This file explains how to set up,
+run, and test the project. For instructions on using Jelly's commands, see the
+[User Guide](docs/README.md).
 
-## Setting up in Intellij
+## Prerequisites
 
-Prerequisites: JDK 25, update Intellij to the most recent version.
+- JDK 25
+- IntelliJ IDEA (recommended) or a terminal
+- macOS, Windows, or Linux
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-1. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-1. Configure the project to use **JDK 25** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/jelly/Jelly.java` file, right-click it, and choose `Run Jelly.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
-   ```
-   ╭──────────────────────╮
-   │      J E L L Y       │
-   │                      │
-   │       .-\"\"\"\"-.   │
-   │     .'  o  o  '.     │
-   │    /      ∆     \\   │
-   │    \\    '---'   /   │
-   │     '._      _.'     │
-   │        `----`        │
-   ╰──────────────────────╯
-   ```
+The project uses JavaFX for its graphical interface and Gradle for building.
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+## Set up in IntelliJ IDEA
+
+1. Open IntelliJ IDEA and select **Open**.
+2. Select the project folder and accept the default import settings.
+3. Configure the project SDK to **JDK 25**. Set the project language level to
+   **SDK default**.
+4. Allow IntelliJ to finish importing the Gradle project and downloading its
+   dependencies.
+
+## Run Jelly
+
+### From IntelliJ IDEA
+
+Open `src/main/java/jelly/Main.java` and run `Main.main()` to start the JavaFX
+application.
+
+### From a terminal
+
+Open a terminal in the project folder, meaning the folder containing `gradlew`.
+Make sure JDK 25 is active, then start Jelly's JavaFX GUI with the Gradle
+wrapper.
+
+On macOS or Linux:
+
+```bash
+cd path/to/ip
+./gradlew run
+```
+
+On Windows (PowerShell):
+
+```powershell
+cd path\to\ip
+gradlew.bat run
+```
+
+The first run may take longer because Gradle downloads the required
+dependencies. Close the GUI window to stop Jelly. Refer to the
+[User Guide](docs/README.md) for instructions on using Jelly.
+
+## Build and test
+
+Build the project with:
+
+```bash
+./gradlew build
+```
+
+Run the automated tests with:
+
+```bash
+./gradlew test
+```
+
+The generated application JAR can be created with:
+
+```bash
+./gradlew shadowJar
+```
+
+## Project structure
+
+```text
+src/main/java/       Application source code
+src/main/resources/  JavaFX views, styles, and images
+src/test/java/       Automated tests
+docs/                User Guide and UI image
+data/jelly.txt       Saved tasks, created when Jelly runs
+```
+
+Keep Java source files under `src/main/java` so that Gradle and IntelliJ can
+compile the project correctly.
