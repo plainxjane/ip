@@ -147,7 +147,7 @@ public class Jelly {
         StringBuilder response = new StringBuilder();
         response.append("Boop! This task is now stuck to your jar:\n");
         response.append("   ").append(todo);
-        response.append("\n\nNow you have ")
+        response.append("\nNow you have ")
                 .append(tasks.size())
                 .append(" tasks in your Jelly jar~");
 
@@ -229,7 +229,7 @@ public class Jelly {
         tasks.addTask(deadline);
         saveTasks();
         return "Boop! This deadline is now stuck to your jar:\n   " + deadline
-                + "\n\nNow you have " + tasks.size() + " tasks in your Jelly jar~";
+                + "\nNow you have " + tasks.size() + " tasks in your Jelly jar~";
     }
 
     /** Creates and saves an event task. */
@@ -259,7 +259,7 @@ public class Jelly {
         tasks.addTask(event);
         saveTasks();
         return "Boop! This event is now tucked into your jar:\n   " + event
-                + "\n\nNow you have " + tasks.size() + " tasks in your Jelly jar~";
+                + "\nNow you have " + tasks.size() + " tasks in your Jelly jar~";
     }
 
     /** Parses and validates a one-based task number against the current task list. */
