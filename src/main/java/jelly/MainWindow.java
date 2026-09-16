@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import jelly.ui.Ui;
 
 /** Controls the main Jelly window defined in MainWindow.fxml. */
