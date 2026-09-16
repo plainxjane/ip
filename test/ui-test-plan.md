@@ -33,6 +33,7 @@ todo buy milk
 deadline submit report /by 2019-12-02 1800
 event team meeting /from 2019-12-02 1000 /to 2019-12-02 1100
 blah
+todo bad | data
 mark 1
 unmark 1
 delete 2
@@ -69,6 +70,7 @@ Boop! This event is now tucked into your jar:
 
 Now you have 3 tasks in your Jelly jar~
 Jelly doesn't recognize your command. Try again~
+Please enter a valid command: Task description must be non-blank and cannot contain ' | '.
 Nice wobble! Jelly marked this task as done~
    [X] buy milk
 No wobble—Jelly marked this task as not done yet~

@@ -86,10 +86,14 @@ public class Storage {
             task.markAsDone();
         }
 
-        // the tag is stored as the final field when present.
+        // The tag is stored as the final field when present.
         if (parts.length >= expectedFieldCount(parts[0])
                 && !parts[parts.length - 1].isBlank()) {
-            task.setTag(parts[parts.length - 1]);
+            try {
+                task.setTag(parts[parts.length - 1]);
+            } catch (IllegalArgumentException exception) {
+                return null;
+            }
         }
 
         return task;
@@ -114,7 +118,10 @@ public class Storage {
      * @throws IOException if the directory or file cannot be written.
      */
     public void save(TaskList tasks) throws IOException {
-        Files.createDirectories(filePath.getParent());
+        Path parent = filePath.getParent();
+        if (parent != null) {
+            Files.createDirectories(parent);
+        }
 
         assert tasks != null : "Tasklist should not be null";
 

@@ -116,6 +116,9 @@ public class Jelly {
         } catch (JellyException e) {
             lastResponseWasError = true;
             return e.getMessage();
+        } catch (IllegalArgumentException e) {
+            lastResponseWasError = true;
+            return "Please enter a valid command: " + e.getMessage();
         }
     }
 

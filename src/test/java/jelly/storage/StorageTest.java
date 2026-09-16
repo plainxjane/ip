@@ -42,7 +42,8 @@ class StorageTest {
     @Test
     void load_missingOrMalformedRecords_skipsRecords() throws Exception {
         Path file = Files.createTempFile("jelly-storage", ".txt");
-        Files.write(file, List.of("T | 0 | valid | ", "bad", "D | 2 | invalid status | 2026-03-01T18:00:00 | ",
+        Files.write(file, List.of("T | 0 | valid | ", "T | 0 | valid | bad tag!", "bad",
+                "D | 2 | invalid status | 2026-03-01T18:00:00 | ",
                 "E | 0 | invalid range | 2026-03-02T11:00:00 | 2026-03-02T10:00:00 | ",
                 "Z | 0 | unknown | "));
 
