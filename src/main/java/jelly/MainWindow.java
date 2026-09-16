@@ -7,6 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /** Controls the main Jelly window defined in MainWindow.fxml. */
 public class MainWindow {
@@ -21,6 +22,7 @@ public class MainWindow {
     private TextField inputField;
 
     private Jelly jelly;
+    private Stage stage;
     private Image userImage;
     private Image jellyImage;
     private boolean shouldAutoScroll;
@@ -41,6 +43,11 @@ public class MainWindow {
      */
     public void setJelly(Jelly jelly) {
         this.jelly = jelly;
+    }
+
+    /** Injects the JavaFX window controlled by this class. */
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     /**
@@ -71,6 +78,11 @@ public class MainWindow {
         }
         messageArea.getChildren().add(responseDialog);
         inputField.clear();
+
+        if (input.equals("bye")) {
+            Platform.runLater(stage::close);
+            return;
+        }
 
         if (shouldAutoScroll) {
             Platform.runLater(() -> scrollPane.setVvalue(1.0));

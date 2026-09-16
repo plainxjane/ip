@@ -290,7 +290,7 @@ public class Jelly {
     /** Saves the current task list. */
     private void saveTasks() throws JellyException {
         try {
-            storage.save( tasks);
+            storage.save(tasks);
         } catch (IOException e) {
             throw new JellyException("Jelly could not save your tasks. Please check access to data/jelly.txt.");
         }

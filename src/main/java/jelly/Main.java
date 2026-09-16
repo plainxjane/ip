@@ -34,6 +34,7 @@ public class Main extends Application {
                     getClass().getResourceAsStream("/images/jelly.png"));
 
             controller.setJelly(jelly);
+            controller.setStage(stage);
             controller.setImages(userImage, jellyImage);
 
             stage.setTitle("Jelly");
