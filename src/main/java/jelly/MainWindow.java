@@ -1,5 +1,6 @@
 package jelly;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -8,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import jelly.ui.Ui;
 
@@ -87,7 +89,10 @@ public class MainWindow {
         inputField.clear();
 
         if (input.equals("bye")) {
-            Platform.runLater(stage::close);
+            inputField.setDisable(true);
+            PauseTransition closeDelay = new PauseTransition(Duration.seconds(1));
+            closeDelay.setOnFinished(event -> stage.close());
+            closeDelay.play();
             return;
         }
 
