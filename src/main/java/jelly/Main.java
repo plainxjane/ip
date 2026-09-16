@@ -36,6 +36,7 @@ public class Main extends Application {
             controller.setJelly(jelly);
             controller.setStage(stage);
             controller.setImages(userImage, jellyImage);
+            controller.showWelcome();
 
             stage.setTitle("Jelly");
             stage.setScene(scene);

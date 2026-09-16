@@ -9,6 +9,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import jelly.ui.Ui;
+
 /** Controls the main Jelly window defined in MainWindow.fxml. */
 public class MainWindow {
 
@@ -59,6 +61,11 @@ public class MainWindow {
     public void setImages(Image userImage, Image jellyImage) {
         this.userImage = userImage;
         this.jellyImage = jellyImage;
+    }
+
+    /** Displays Jelly's welcome message when the window opens. */
+    public void showWelcome() {
+        messageArea.getChildren().add(DialogBox.getJellyDialog(Ui.GUI_WELCOME_MESSAGE, jellyImage));
     }
 
     /** Processes the command entered by the user. */

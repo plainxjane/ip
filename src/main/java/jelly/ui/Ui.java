@@ -4,6 +4,9 @@ import jelly.model.TaskList;
 
 /** Handles Jelly's interaction with the command-line user. */
 public class Ui {
+    /** Message shown when the GUI conversation starts. */
+    public static final String GUI_WELCOME_MESSAGE = "Hi, I'm Jelly! What can I do for you?";
+
     /** Jelly's farewell message, shared with {@code Jelly#computeCommandResult} for the GUI. */
     public static final String BYE_MESSAGE = "Bye! Stay jiggly~";
 
