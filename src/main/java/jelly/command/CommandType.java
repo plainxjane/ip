@@ -13,5 +13,6 @@ public enum CommandType {
     TAG,
     UNTAG,
     BYE,
-    INVALID
+    INVALID,
+    HELP
 }

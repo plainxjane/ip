@@ -108,6 +108,8 @@ public class Jelly {
                     return executeTagCommand(command);
                 case UNTAG:
                     return executeUntagCommand(command);
+                case HELP:
+                    return Ui.HELP_MESSAGE;
                 case BYE:
                     return Ui.BYE_MESSAGE;
                 default:

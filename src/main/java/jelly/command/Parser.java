@@ -35,6 +35,8 @@ public class Parser {
             return CommandType.TAG;
         } else if (matchesCommand(command, "untag")) {
             return CommandType.UNTAG;
+        } else if (command.equals("help")) {
+            return CommandType.HELP;
         }
         return CommandType.INVALID;
     }

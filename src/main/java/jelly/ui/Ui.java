@@ -10,6 +10,23 @@ public class Ui {
     /** Jelly's farewell message, shared with {@code Jelly#computeCommandResult} for the GUI. */
     public static final String BYE_MESSAGE = "Bye! Stay jiggly~";
 
+    /** Lists Jelly's available commands. */
+    public static final String HELP_MESSAGE =
+            """
+                    Your Jelly commands:
+                    todo <description>
+                    deadline <description> /by yyyy-MM-dd HHmm
+                    event <description> /from yyyy-MM-dd HHmm /to yyyy-MM-dd HHmm
+                    list
+                    find <keyword>
+                    mark <task number>
+                    unmark <task number>
+                    tag <task number> <tag>
+                    untag <task number>
+                    delete <task number>
+                    help
+                    bye""";
+
     /** Prints Jelly's greeting and prompt. */
     public void showWelcome() {
         String banner = "╭──────────────────────╮\n"

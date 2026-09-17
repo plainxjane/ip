@@ -18,6 +18,7 @@ class ParserTest {
         assertEquals(CommandType.MARK, parser.parse("mark"));
         assertEquals(CommandType.UNMARK, parser.parse("unmark"));
         assertEquals(CommandType.DELETE, parser.parse("delete"));
+        assertEquals(CommandType.HELP, parser.parse("help"));
     }
 
     @Test
@@ -40,6 +41,7 @@ class ParserTest {
         assertEquals(CommandType.INVALID, parser.parse("deadlineSomething"));
         assertEquals(CommandType.INVALID, parser.parse("eventSomething"));
         assertEquals(CommandType.INVALID, parser.parse("findSomething"));
+        assertEquals(CommandType.INVALID, parser.parse("help anything"));
         assertEquals(CommandType.INVALID, parser.parse(null));
         assertEquals(CommandType.INVALID, parser.parse(" todo buy groceries"));
         assertEquals(CommandType.INVALID, parser.parse("todo  buy groceries"));

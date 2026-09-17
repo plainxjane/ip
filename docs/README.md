@@ -109,6 +109,10 @@ untag 1
 
 Use `bye` to exit Jelly.
 
+### View available commands: `help`
+
+Use `help` to display every available command and its required format.
+
 ## Command summary
 
 | Command | Purpose |
@@ -123,6 +127,7 @@ Use `bye` to exit Jelly.
 | `tag <number> <tag>` | Add or replace a task tag |
 | `untag <number>` | Remove a task tag |
 | `delete <number>` | Delete a task |
+| `help` | Show available commands and formats |
 | `bye` | Exit Jelly |
 
 ## Tips
