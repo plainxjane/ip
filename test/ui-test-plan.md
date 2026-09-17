@@ -59,15 +59,12 @@ Hello! I'm Jelly, your squishy little assistant!
 Let's make your tasks stick! :)
 Boop! This task is now stuck to your jar:
    [T][ ] buy milk
-
 Now you have 1 tasks in your Jelly jar~
 Boop! This deadline is now stuck to your jar:
    [D][ ] submit report (by: Dec 02 2019 18:00)
-
 Now you have 2 tasks in your Jelly jar~
 Boop! This event is now tucked into your jar:
    [E][ ] team meeting (from: Dec 02 2019 10:00 to: Dec 02 2019 11:00)
-
 Now you have 3 tasks in your Jelly jar~
 Jelly doesn't recognize your command. Try again~
 Please enter a valid command: Task description must be non-blank and cannot contain ' | '.

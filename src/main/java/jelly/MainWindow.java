@@ -1,5 +1,8 @@
 package jelly;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -7,6 +10,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -14,6 +19,7 @@ import jelly.ui.Ui;
 
 /** Controls the main Jelly window defined in MainWindow.fxml. */
 public class MainWindow {
+    private static final int MAX_HISTORY_SIZE = 50;
 
     @FXML
     private ScrollPane scrollPane;
@@ -29,6 +35,8 @@ public class MainWindow {
     private Image userImage;
     private Image jellyImage;
     private boolean shouldAutoScroll;
+    private final List<String> commandHistory = new ArrayList<>();
+    private int historyIndex;
 
     /** Configures controls after FXML has injected them. */
     @FXML
@@ -37,6 +45,7 @@ public class MainWindow {
         messageArea.setFillWidth(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        inputField.setOnKeyPressed(this::handleHistoryNavigation);
     }
 
     /**
@@ -77,6 +86,7 @@ public class MainWindow {
             return;
         }
 
+        addToHistory(input);
         shouldAutoScroll = isNearBottom();
         messageArea.getChildren().add(DialogBox.getUserDialog(input, userImage));
         String response = jelly.executeCommand(input);
@@ -97,6 +107,49 @@ public class MainWindow {
 
         if (shouldAutoScroll) {
             Platform.runLater(() -> scrollPane.setVvalue(1.0));
+        }
+    }
+
+    /** Navigates through commands stored during the current session. */
+    private void handleHistoryNavigation(KeyEvent event) {
+        if (event.getCode() == KeyCode.UP) {
+            showPreviousCommand();
+            event.consume();
+        } else if (event.getCode() == KeyCode.DOWN) {
+            showNextCommand();
+            event.consume();
+        }
+    }
+
+    /** Adds a submitted command to the in-memory history. */
+    private void addToHistory(String command) {
+        if (commandHistory.isEmpty() || !commandHistory.get(commandHistory.size() - 1).equals(command)) {
+            commandHistory.add(command);
+            if (commandHistory.size() > MAX_HISTORY_SIZE) {
+                commandHistory.remove(0);
+            }
+        }
+        historyIndex = commandHistory.size();
+    }
+
+    /** Shows the previous command in history, if one exists. */
+    private void showPreviousCommand() {
+        if (historyIndex > 0) {
+            historyIndex--;
+            inputField.setText(commandHistory.get(historyIndex));
+            inputField.positionCaret(inputField.getText().length());
+        }
+    }
+
+    /** Shows the next command in history or clears the input field. */
+    private void showNextCommand() {
+        if (historyIndex < commandHistory.size() - 1) {
+            historyIndex++;
+            inputField.setText(commandHistory.get(historyIndex));
+            inputField.positionCaret(inputField.getText().length());
+        } else {
+            historyIndex = commandHistory.size();
+            inputField.clear();
         }
     }
 
