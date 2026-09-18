@@ -113,6 +113,10 @@ Use `bye` to exit Jelly.
 
 Use `help` to display every available command and its required format.
 
+### Revisit past commands
+
+Use the up and down arrow keys to revisit commands from your command history.
+
 ## Command summary
 
 | Command | Purpose |
